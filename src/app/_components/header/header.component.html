@@ -1,0 +1,26 @@
+<div class="mt-5 w-full max-w-3xl mx-auto flex items-center justify-between">
+  <img src="/logo.svg" alt="Habits" />
+
+  <button
+    (click)="showModal()"
+    class="border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
+  >
+    <i class="pi pi-plus text-violet-500"></i>
+    Novo Hábito
+  </button>
+</div>
+
+<p-dialog
+  header="Criar hábito"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  class="bg-zinc-900"
+>
+  <div>
+    <p class="">
+      olá esse é o form de novo habito
+    </p>
+  </div>
+</p-dialog>
