@@ -1,0 +1,47 @@
+<form (ngSubmit)="createNewHabit()" class="w-full flex flex-col gap-4 ">
+  <label class="font-semibold leading-tight">
+    Qual o seu comprometimento?
+  </label>
+
+  <input
+    type="text"
+    placeholder="ex.: Exercícios, dormir bem, etc..."
+    class="p-4 rounded-lg bg-zinc-800 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-zinc-900"
+    [(ngModel)]="title"
+    name="title"
+    required
+  />
+
+  <label class="font-semibold leading-tight">
+    Qual a recorrência?
+  </label>
+
+  <div class="flex flex-col gap-2">
+    @for (weekDay of availableWeekDays; track $index) {
+      <div class="flex items-center gap-3">
+        <p-checkbox
+          inputId="day{{ $index }}"
+          [(ngModel)]="weekDays[$index]"
+          name="day{{ $index }}"
+          binary="true"
+        ></p-checkbox>
+
+        <label
+          for="day {{ $index }}"
+          class="text-black leading-tight cursor-pointer"
+        >
+          {{ weekDay }}
+        </label>
+      </div>
+    }
+    
+  </div>
+
+  <button
+    type="submit"
+    class="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-green-600 hover:bg-green-500 transition-colors focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2 focus:ring-offset-zinc-900"
+  >
+    <i class="pi pi-check"></i>
+    Confirmar
+  </button>
+</form>
