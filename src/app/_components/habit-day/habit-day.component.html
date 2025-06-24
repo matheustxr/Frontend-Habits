@@ -1,23 +1,25 @@
 <!-- Botão (Trigger do Popover) -->
 <p-button
   (click)="popover.toggle($event)"
-  class="w-12 h-12 rounded-full flex justify-center items-center relative border-none bg-transparent"
+  class="w-12 h-12 rounded-full  relative border-none bg-transparent"
   [style.border]="'none'"
   [style.backgroundColor]="'transparent'"
 >
   <!-- Camada de progresso circular -->
   <div
-    class="absolute w-12 h-12 rounded-full"
+    class="w-12 h-12 p-0.5 flex justify-center items-center rounded-full"
     [ngStyle]="{
       backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
       transition: 'background-image 0.5s ease'
     }"
-  ></div>
+  >
+    <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center z-10">
+      <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
+    </div>
+  </div>
 
   <!-- Círculo interno menor (para evidenciar a borda) -->
-  <div class="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center z-10">
-    <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
-  </div>
+  
 </p-button>
 
 

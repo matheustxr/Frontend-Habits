@@ -3,9 +3,9 @@
 
   <button
     (click)="showModal()"
-    class="border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
+    class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
   >
-    <i class="pi pi-plus text-violet-500"></i>
+    <i class="pi pi-plus  text-violet-500"></i>
     Novo Hábito
   </button>
 </div>
@@ -16,9 +16,7 @@
   [modal]="true"
   [closable]="true"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '30vw' }"
-  class="bg-zinc-900"
->
-  <div>
-    <app-new-habit-form />
-  </div>
+  class="bg-zinc-900 "
+> 
+  <app-new-habit-form />
 </p-dialog>
