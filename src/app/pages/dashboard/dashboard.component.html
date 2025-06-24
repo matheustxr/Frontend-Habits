@@ -6,7 +6,30 @@
   </div>
 
   <app-header />
-  <div class="w-full">
-    <app-progress-bar [progress]="50"></app-progress-bar>
+  
+  <div class="flex gap-5">
+    <app-habit-day
+      [date]="mockDate"
+      [defaultCompleted]="2"
+      [amount]="3"
+    />
+
+    <app-habit-day
+      [date]="mockDate"
+      [defaultCompleted]="2"
+      [amount]="3"
+    />
+
+    <app-habit-day
+      [date]="mockDate"
+      [defaultCompleted]="2"
+      [amount]="3"
+    />
+
+    <app-habit-day
+      [date]="mockDate"
+      [defaultCompleted]="2"
+      [amount]="3"
+    />
   </div>
 </div>

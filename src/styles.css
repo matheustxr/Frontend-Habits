@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+
+.p-popover {
+  border-color: #18181b !important;
+  background-color: #18181b !important;
+  color: #18181b !important;
+}
+
+.p-popover.p-popover-flipped::after, .p-popover.p-popover-flipped:before{
+  border-bottom-color: transparent;
+  border-top-color: #18181b !important;
+}
+
+.p-button {
+  border-radius: 100% !important;
+  padding: 3px !important;
+  background-color: transparent !important;
+  border: transparent !important;
+}
