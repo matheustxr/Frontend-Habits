@@ -1,0 +1,37 @@
+<!-- Botão (Trigger do Popover) -->
+<p-button
+  (click)="popover.toggle($event)"
+  class="w-12 h-12 rounded-full flex justify-center items-center relative border-none bg-transparent"
+  [style.border]="'none'"
+  [style.backgroundColor]="'transparent'"
+>
+  <!-- Camada de progresso circular -->
+  <div
+    class="absolute w-12 h-12 rounded-full"
+    [ngStyle]="{
+      backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
+      transition: 'background-image 0.5s ease'
+    }"
+  ></div>
+
+  <!-- Círculo interno menor (para evidenciar a borda) -->
+  <div class="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center z-10">
+    <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
+  </div>
+</p-button>
+
+
+<p-popover #popover>
+  <div class="min-w-[320px] p-6 rounded-2xl bg-zinc-900 flex flex-col">
+    <span class="font-semibold !text-white">{{ dayOfWeek }}</span>
+    <span class="mt-1 font-extrabold leading-tight text-3xl !text-white">{{ dayAndMonth }}</span>
+
+    <app-progress-bar [progress]=completedPercentage ></app-progress-bar>
+
+    <app-habits-list
+      class="mt-4"
+      [date]="date"
+      (completedChange)="handleCompletedChanged($event)"
+    ></app-habits-list>
+  </div>
+</p-popover>
