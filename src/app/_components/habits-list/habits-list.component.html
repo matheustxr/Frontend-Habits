@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-3">
+  <div
+    *ngFor="let habit of habits"
+    class="flex items-center gap-3 group cursor-pointer"
+    (click)="toggleHabit(habit.id)"
+  >
+    <p-checkbox
+      [binary]="true"
+      [ngModel]="habit.completed"
+      class="cursor-pointer"
+    ></p-checkbox>
+
+    <span class="text-white leading-tight">
+      {{ habit.title }}
+    </span>
+  </div>
+</div>
