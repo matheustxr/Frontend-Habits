@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HabitSummary } from '../models/habit.model';
+import { HabitSummary } from '../interfaces/habit-summmary';
+
+interface HabitsForDayResponse {
+  possibleHabits: {
+    id: string;
+    title: string;
+    created_at: string;
+  }[];
+  completedHabits: string[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +21,18 @@ export class HabitService {
   constructor(private http: HttpClient) {}
 
   getSummary(): Observable<HabitSummary[]> {
-    const response = this.http.get<HabitSummary[]>(`${this.baseUrl}/summary`);
-    console.log(response)
-    return response;
+    return this.http.get<HabitSummary[]>(`${this.baseUrl}/summary`);
   }
+
+  getHabitsByDate(dateISO: string): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/day`, {
+    params: { date: dateISO }
+  });
+}
+
+toggleHabit(habitId: string): Observable<any> {
+  return this.http.patch(`${this.baseUrl}/habits/${habitId}/toggle`, {});
+}
 
   createHabit(title: string, weekDays: number[]): Observable<any> {
     return this.http.post(`${this.baseUrl}/habits`, {

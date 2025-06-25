@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HabitService } from '../../services/habit.service';
-import { HabitSummary } from '../../models/habit.model';
+import { HabitSummary } from '../../interfaces/habit-summmary';
 import { HabitDayComponent } from '../../_components/habit-day/habit-day.component';
 import { HeaderComponent } from "../../_components/header/header.component";
 import dayjs from 'dayjs';

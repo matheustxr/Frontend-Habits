@@ -1,39 +1,56 @@
-<!-- Botão (Trigger do Popover) -->
-<p-button
-  (click)="popover.toggle($event)"
-  class="w-12 h-12 rounded-full  relative border-none bg-transparent"
-  [style.border]="'none'"
-  [style.backgroundColor]="'transparent'"
->
-  <!-- Camada de progresso circular -->
+<div class="relative inline-block w-full" #triggerWrapper>
+  <div (click)="toggle()" class="w-fit">
+    <p-button
+      class="w-12 h-12 rounded-full relative border-none bg-transparent"
+      [style.border]="'none'"
+      [style.backgroundColor]="'transparent'"
+    >
+      <div
+        class="w-12 h-12 p-0.5 flex justify-center items-center rounded-full"
+        [ngStyle]="{
+          backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
+          transition: 'background-image 0.5s ease'
+        }"
+      >
+        <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center z-10">
+          <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
+        </div>
+      </div>
+    </p-button>
+  </div>
+
   <div
-    class="w-12 h-12 p-0.5 flex justify-center items-center rounded-full"
-    [ngStyle]="{
-      backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
-      transition: 'background-image 0.5s ease'
+    *ngIf="isPopoverOpen"
+    class="absolute z-50 w-80 rounded-xl bg-zinc-900 p-6 shadow-lg"
+    [ngClass]="{
+      'top-full mt-3': !renderAbove,
+      'bottom-full mb-3': renderAbove
     }"
+    [ngStyle]="{
+      left: '50%',
+      transform: renderAbove ? 'translateX(-50%)' : 'translateX(-7%)'
+    }"
+    #popoverContent
   >
-    <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center z-10">
-      <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
+    <!-- Seta -->
+    <div
+      class="absolute w-3 h-3 rotate-45 bg-zinc-900"
+      [ngClass]="{
+        'top-[-6px] left-1/2 -translate-x-1/2': !renderAbove,
+        'bottom-[-6px] left-1/2 -translate-x-1/2': renderAbove
+      }"
+    ></div>
+
+    <div class="flex flex-col">
+      <span class="font-semibold text-white">{{ dayOfWeek }}</span>
+      <span class="mt-1 font-extrabold leading-tight text-3xl text-white">{{ dayAndMonth }}</span>
+
+      <app-progress-bar [progress]="completedPercentage"></app-progress-bar>
+
+      <app-habits-list
+        [date]="date"
+        (completedChange)="handleCompletedChanged($event)"
+      ></app-habits-list>
     </div>
   </div>
-
-  <!-- Círculo interno menor (para evidenciar a borda) -->
-  
-</p-button>
-
-
-<p-popover #popover>
-  <div class="min-w-[320px] p-6 rounded-2xl bg-zinc-900 flex flex-col">
-    <span class="font-semibold !text-white">{{ dayOfWeek }}</span>
-    <span class="mt-1 font-extrabold leading-tight text-3xl !text-white">{{ dayAndMonth }}</span>
-
-    <app-progress-bar [progress]=completedPercentage ></app-progress-bar>
-
-    <app-habits-list
-      class="mt-4"
-      [date]="date"
-      (completedChange)="handleCompletedChanged($event)"
-    ></app-habits-list>
-  </div>
-</p-popover>
+</div>
