@@ -8,7 +8,6 @@ import { ProgressBarComponent } from "../progress-bar/progress-bar.component";
 
 @Component({
   selector: 'app-habit-day',
-  standalone: true,
   imports: [CommonModule, PopoverModule, ButtonModule, HabitsListComponent, ProgressBarComponent],
   templateUrl: './habit-day.component.html',
 })
