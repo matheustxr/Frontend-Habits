@@ -3,7 +3,6 @@ import { HabitService } from '../../services/habit.service';
 import { MockHabitService } from '../../../testing/habit.service.mock';
 import { HabitsListComponent } from './habits-list.component';
 import { ChangeDetectorRef } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 
 describe('HabitsListComponent', () => {
