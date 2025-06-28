@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { HeaderComponent } from './header.component';
 import { By } from '@angular/platform-browser';
 
@@ -8,7 +10,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent]
+      imports: [HeaderComponent, NoopAnimationsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
