@@ -20,21 +20,21 @@
     @for (weekDay of availableWeekDays; track $index) {
       <div class="flex items-center gap-3">
         <p-checkbox
-          inputId="day{{ $index }}"
+          inputId="day{{$index}}"
           [(ngModel)]="weekDays[$index]"
-          name="day{{ $index }}"
+          name="day{{$index}}"
           binary="true"
         ></p-checkbox>
 
         <label
-          for="day {{ $index }}"
+          for="day{{$index}}"
           class="text-black leading-tight cursor-pointer"
         >
           {{ weekDay }}
         </label>
       </div>
     }
-    
+
   </div>
 
   <button
