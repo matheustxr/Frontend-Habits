@@ -10,8 +10,7 @@ describe('NewHabitFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CheckboxModule, ButtonModule],
-      declarations: [NewHabitFormComponent],
+      imports: [FormsModule, CheckboxModule, ButtonModule, NewHabitFormComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewHabitFormComponent);
