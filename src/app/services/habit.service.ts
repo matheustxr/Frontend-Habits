@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HabitSummary } from '../interfaces/habit-summmary';
+import { HabitSummary } from '../interfaces/habit-summary';
 
 interface HabitsForDayResponse {
   possibleHabits: {
