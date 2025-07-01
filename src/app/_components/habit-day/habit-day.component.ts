@@ -63,7 +63,6 @@ export class HabitDayComponent implements AfterViewInit, OnChanges {
   }
 
   handleCompletedChanged(value: number): void {
-    console.log('mudando o valor dessa caralha')
     this.completed = value;
   }
 
