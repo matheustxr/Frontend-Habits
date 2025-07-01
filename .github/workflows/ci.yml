@@ -28,4 +28,4 @@ jobs:
         uses: browser-actions/setup-chrome@latest
 
       - name: Run tests
-        run: npm test
+        run: npm run test:ci
