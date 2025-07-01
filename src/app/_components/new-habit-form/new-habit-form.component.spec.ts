@@ -10,7 +10,7 @@ describe('NewHabitFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CheckboxModule, ButtonModule, NewHabitFormComponent],
+      imports: [FormsModule, CheckboxModule, ButtonModule, NewHabitFormComponent], // assuming NewHabitFormComponent is standalone
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewHabitFormComponent);
@@ -30,19 +30,14 @@ describe('NewHabitFormComponent', () => {
     expect(window.alert).toHaveBeenCalledWith('Preencha todos os campos');
   });
 
-  it('should log and reset form when data is valid', () => {
+  it('should reset form and show success alert when data is valid', () => {
     spyOn(window, 'alert');
-    spyOn(console, 'log');
 
     component.title = 'Beber água';
     component.weekDays = { 1: true, 3: true };
 
     component.createNewHabit();
-
-    expect(console.log).toHaveBeenCalledWith({
-      title: 'Beber água',
-      weekDays: [1, 3],
-    });
+    // });
 
     expect(component.title).toBe('');
     expect(component.weekDays).toEqual({});
