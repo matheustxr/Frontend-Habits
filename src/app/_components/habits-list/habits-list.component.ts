@@ -41,7 +41,6 @@ export class HabitsListComponent implements OnChanges {
         title: habit.title,
         completed: response.completedHabits.includes(habit.id),
       }));
-      console.log('Dados de hábitos carregados (loadHabitsForDate):', this.habits);
       this.emitCompletedCount();
       this.cdr.detectChanges();
     });
@@ -58,7 +57,6 @@ export class HabitsListComponent implements OnChanges {
 
     this.habitService.toggleHabit(habitId).subscribe({
       next: () => {
-        console.log('sucesso ao atualizar hábito no backend');
         this.emitCompletedCount();
         this.cdr.detectChanges();
       },
@@ -68,7 +66,6 @@ export class HabitsListComponent implements OnChanges {
         this.habits = this.habits.map((h, i) =>
           i === index ? { ...h, completed: originalCompletedState } : h
         );
-        console.log('Estado da lista de hábitos APÓS erro da API (revertido):', this.habits);
         this.emitCompletedCount();
         this.cdr.detectChanges();
       }

@@ -32,13 +32,6 @@ export class NewHabitFormComponent {
       return;
     }
 
-    // Envia para a API (mock por enquanto)
-    console.log({
-      title: this.title,
-      weekDays: selectedDays,
-    });
-
-    // Resetar o form
     this.title = '';
     this.weekDays = {};
 
