@@ -28,4 +28,4 @@ jobs:
         uses: browser-actions/setup-chrome@latest
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless --browserFlags="--no-sandbox --disable-gpu"
