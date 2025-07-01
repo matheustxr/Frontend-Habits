@@ -24,8 +24,5 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Install Google Chrmome for tests with karma
-        uses: browser-actions/setup-chrome@latest
-
       - name: Run tests
         run: npm run test:ci

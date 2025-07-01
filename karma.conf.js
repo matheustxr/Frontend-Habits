@@ -1,3 +1,5 @@
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -23,10 +25,7 @@ module.exports = function (config) {
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/front-habits'),
       subdir: '.',
-      reporters: [
-        { type: 'html' },
-        { type: 'text-summary' },
-      ],
+      reporters: [{ type: 'html' }, { type: 'text-summary' }],
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
@@ -37,11 +36,7 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: [
-          '--no-sandbox',
-          '--disable-gpu',
-          '--remote-debugging-port=9222',
-        ],
+        flags: ['--no-sandbox', '--disable-gpu', '--remote-debugging-port=9222'],
       },
     },
     singleRun: true,
