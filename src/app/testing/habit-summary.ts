@@ -1,4 +1,4 @@
-import { HabitSummary } from '../app/interfaces/habit-summary';
+import { HabitSummary } from '../interfaces/habit-summary';
 
 export const mockSummary: HabitSummary[] = [
   {
