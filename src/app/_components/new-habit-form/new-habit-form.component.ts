@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import { TextInputComponent } from '../text-input/text-input.component';
 
 @Component({
   selector: 'app-new-habit-form',
-  imports: [FormsModule, CheckboxModule, ButtonModule],
+  imports: [FormsModule, CheckboxModule, ButtonModule, TextInputComponent],
   templateUrl: './new-habit-form.component.html',
 })
 export class NewHabitFormComponent {
