@@ -1,8 +1,9 @@
-<form (ngSubmit)="createNewHabit()" class="w-full flex flex-col gap-4 ">
+<form (ngSubmit)="createNewHabit()" class="w-full md:min-w-[400px] flex flex-col gap-4 ">
   <app-text-input
     label="Qual o seu comprometimento?"
     placeholder="ex.: Exercícios, dormir bem, etc..."
     name="title"
+    type="text"
     [(ngModel)]="title"
     required
   ></app-text-input>

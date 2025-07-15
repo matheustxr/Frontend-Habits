@@ -17,6 +17,7 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() placeholder: string = '';
   @Input() name: string = '';
+  @Input() type: string = 'text'
 
   value: string = '';
 
