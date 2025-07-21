@@ -47,12 +47,17 @@ describe('DashboardComponent', () => {
   });
 
   it('should generate correct number of days for current mounth', () => {
-    const currentYear = new Date().getFullYear();
-    const currentMounth = new Date().getFullYear();
-    const dates = component['generateDatesFromMonth'](currentYear, currentMounth);
-    expect(dates.length).toBe(30);
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+
+    const dates = component['generateDatesFromMonth'](currentYear, currentMonth);
+
+    const expectedDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    expect(dates.length).toBe(expectedDays);
     expect(dates[0].getDate()).toBe(1);
-    expect(dates[29].getDate()).toBe(30);
+    expect(dates[expectedDays - 1].getDate()).toBe(expectedDays);
   });
 
   it('should update calendar and fetch summary', () => {
