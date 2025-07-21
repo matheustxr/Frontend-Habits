@@ -42,13 +42,14 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  // 🧪 Teste 1: Criação
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generate correct number of days for June 2025', () => {
-    const dates = component['generateDatesFromMonth'](2025, 5); // Junho = 5
+  it('should generate correct number of days for current mounth', () => {
+    const currentYear = new Date().getFullYear();
+    const currentMounth = new Date().getFullYear();
+    const dates = component['generateDatesFromMonth'](currentYear, currentMounth);
     expect(dates.length).toBe(30);
     expect(dates[0].getDate()).toBe(1);
     expect(dates[29].getDate()).toBe(30);
