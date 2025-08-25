@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideHttpClientTesting } from '@angular/common/http/testing'; // Importe esta função
-import { provideHttpClient } from '@angular/common/http'; // Importe esta função
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 import { HeaderComponent } from './header.component';
 import { By } from '@angular/platform-browser';
