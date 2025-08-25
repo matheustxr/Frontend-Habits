@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importe CommonModule ou NgIf
+import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { NewHabitFormComponent } from "../new-habit-form/new-habit-form.component";
@@ -30,7 +30,6 @@ export class HeaderComponent {
       this.modalHeader = '';
     }
 
-    // Abre o modal
     this.displayModal = true;
   }
 }
