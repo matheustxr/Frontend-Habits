@@ -1,16 +1,12 @@
-<form (ngSubmit)="createNewHabit()" class="w-full flex flex-col gap-4 ">
-  <label class="font-semibold leading-tight">
-    Qual o seu comprometimento?
-  </label>
-
-  <input
-    type="text"
+<form (ngSubmit)="createNewHabit()" class="w-full md:min-w-[400px] flex flex-col gap-4 ">
+  <app-text-input
+    label="Qual o seu comprometimento?"
     placeholder="ex.: Exercícios, dormir bem, etc..."
-    class="p-4 rounded-lg bg-zinc-800 text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-zinc-900"
-    [(ngModel)]="title"
     name="title"
+    type="text"
+    [(ngModel)]="title"
     required
-  />
+  ></app-text-input>
 
   <label class="font-semibold leading-tight">
     Qual a recorrência?

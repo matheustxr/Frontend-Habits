@@ -1,10 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { HabitService } from '../../services/habit.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let authService: AuthService;
 
   const mockSummary = [
     {
@@ -34,24 +38,36 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
-      providers: [{ provide: HabitService, useClass: MockHabitService }]
+      providers: [
+        { provide: HabitService, useClass: MockHabitService },
+        AuthService,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService);
     fixture.detectChanges();
   });
 
-  // 🧪 Teste 1: Criação
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generate correct number of days for June 2025', () => {
-    const dates = component['generateDatesFromMonth'](2025, 5); // Junho = 5
-    expect(dates.length).toBe(30);
+  it('should generate correct number of days for current mounth', () => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+
+    const dates = component['generateDatesFromMonth'](currentYear, currentMonth);
+
+    const expectedDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    expect(dates.length).toBe(expectedDays);
     expect(dates[0].getDate()).toBe(1);
-    expect(dates[29].getDate()).toBe(30);
+    expect(dates[expectedDays - 1].getDate()).toBe(expectedDays);
   });
 
   it('should update calendar and fetch summary', () => {

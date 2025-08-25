@@ -1,22 +1,36 @@
-<div class="w-full max-w-2xl mx-auto flex items-center justify-between">
-  <img src="/logo.svg" alt="Habits" />
+<header>
+  <div class="w-full max-w-2xl mx-auto flex items-center justify-between">
+    <img src="/logo.svg" alt="Habits" />
 
-  <button
-    (click)="showModal()"
-    class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
+    <button
+      *ngIf="authService.isLoggedIn()"
+      (click)="showModal()"
+      class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
+    >
+      <i class="pi pi-plus text-violet-500"></i>
+      Novo Hábito
+    </button>
+
+    <button
+      *ngIf="!authService.isLoggedIn()"
+      (click)="showModal()"
+      class="flex gap-2 items-center text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 hover:border-violet-300 transition-colors"
+    >
+      <i class="pi pi-user text-violet-500"></i>
+      Entrar
+    </button>
+  </div>
+
+  <p-dialog
+    [header]="modalHeader"
+    [(visible)]="displayModal"
+    [modal]="true"
+    [closable]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
+    class="bg-zinc-900"
   >
-    <i class="pi pi-plus  text-violet-500"></i>
-    Novo Hábito
-  </button>
-</div>
+    <app-new-habit-form *ngIf="authService.isLoggedIn()" />
 
-<p-dialog
-  header="Criar hábito"
-  [(visible)]="displayModal"
-  [modal]="true"
-  [closable]="true"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '30vw' }"
-  class="bg-zinc-900 "
->
-  <app-new-habit-form />
-</p-dialog>
+    <app-login-form *ngIf="!authService.isLoggedIn()" />
+  </p-dialog>
+</header>
