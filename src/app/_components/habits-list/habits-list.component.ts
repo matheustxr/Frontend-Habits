@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
+import { SummaryService } from '../../services/summary.service';
 import dayjs from 'dayjs';
 
 @Component({
@@ -25,17 +26,18 @@ export class HabitsListComponent implements OnChanges {
 
   constructor(
     private habitService: HabitService,
+    private summaryService: SummaryService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['date'] && this.date) {
-      this.loadHabitsForDate(this.date);
+      this.loadHabitsForDate();
     }
   }
 
-  loadHabitsForDate(date: Date) {
-    this.habitService.getHabitsByDate(dayjs(date).toISOString()).subscribe((response: any) => {
+  loadHabitsForDate() {
+    this.summaryService.getHabitsByDate().subscribe((response: any) => {
       this.habits = response.possibleHabits.map((habit: any) => ({
         id: habit.id,
         title: habit.title,
@@ -50,12 +52,14 @@ export class HabitsListComponent implements OnChanges {
     const index = this.habits.findIndex(h => h.id === habitId);
     if (index === -1) return;
 
+    const dateISO = dayjs(this.date).toISOString();
+
     const originalCompletedState = this.habits[index].completed;
       this.habits = this.habits.map((h, i) =>
         i === index ? { ...h, completed: !originalCompletedState } : h
-    );
+      );
 
-    this.habitService.toggleHabit(habitId).subscribe({
+    this.habitService.toggleHabit(habitId, dateISO).subscribe({
       next: () => {
         this.emitCompletedCount();
         this.cdr.detectChanges();

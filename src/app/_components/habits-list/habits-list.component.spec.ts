@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HabitService } from '../../services/habit.service';
+import { HabitService } from '../../services/summary.service';
 import { MockHabitService } from '../../testing/habit-service.mock';
 import { HabitsListComponent } from './habits-list.component';
 import { ChangeDetectorRef } from '@angular/core';

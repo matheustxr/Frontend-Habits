@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { HabitService } from '../../services/habit.service';
+import { HabitService } from '../../services/summary.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';

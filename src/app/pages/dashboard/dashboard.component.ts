@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HabitService } from '../../services/habit.service';
+import { SummaryService } from '../../services/summary.service';
 import { HabitSummary } from '../../interfaces/habit-summary';
 import { HabitDayComponent } from '../../_components/habit-day/habit-day.component';
 import { HeaderComponent } from "../../_components/header/header.component";
@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   leadingEmptyDays: number[] = [];
   summary: HabitSummary[] = [];
 
-  constructor(private habitService: HabitService) {}
+  constructor(private summaryService: SummaryService) {}
 
   ngOnInit(): void {
     this.updateCalendar();
@@ -53,7 +53,10 @@ export class DashboardComponent implements OnInit {
       ? Array.from({ length: dayjs(this.dates[0]).day() })
       : [];
 
-    this.habitService.getSummary().subscribe((data) => {
+    const startDate = dayjs(this.dates[0]).format('YYYY-MM-DD');
+    const endDate = dayjs(this.dates[this.dates.length - 1]).format('YYYY-MM-DD');
+
+    this.summaryService.getSummary(startDate, endDate).subscribe((data) => {
       this.summary = data;
     });
   }

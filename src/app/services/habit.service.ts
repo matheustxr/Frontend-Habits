@@ -1,43 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HabitSummary } from '../interfaces/habit-summary';
-
-interface HabitsForDayResponse {
-  possibleHabits: {
-    id: string;
-    title: string;
-    created_at: string;
-  }[];
-  completedHabits: string[];
-}
+import { environment } from '../../environments/environment';
+import { Habit } from '../interfaces/habit';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HabitService {
-  private baseUrl = 'http://localhost:3333';
+  private apiUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
-  getSummary(): Observable<HabitSummary[]> {
-    return this.http.get<HabitSummary[]>(`${this.baseUrl}/summary`);
+  createHabit(data: Habit): Observable<any> {
+    return this.http.post(`${this.apiUrl}/habits`, data);
   }
 
-  getHabitsByDate(dateISO: string): Observable<any> {
-  return this.http.get<any>(`${this.baseUrl}/day`, {
-    params: { date: dateISO }
-  });
-}
+  getAllHabits(): Observable<Habit[]> {
+    return this.http.get<Habit[]>(`${this.apiUrl}/habits`);
+  }
 
-toggleHabit(habitId: string): Observable<any> {
-  return this.http.patch(`${this.baseUrl}/habits/${habitId}/toggle`, {});
-}
+  getHabitById(id: string): Observable<Habit> {
+    return this.http.get<Habit>(`${this.apiUrl}/habits/${id}`);
+  }
 
-  createHabit(title: string, weekDays: number[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}/habits`, {
-      title,
-      weekDays
-    });
+  deleteHabit(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/habits/${id}`);
+  }
+
+  updateHabit(id: string, data: Partial<Habit>): Observable<Habit> {
+    return this.http.put<Habit>(`${this.apiUrl}/habits/${id}`, data);
+  }
+
+  toggleHabit(habitId: string, date: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/habits/${habitId}/toggle/${date}`, {});
   }
 }
