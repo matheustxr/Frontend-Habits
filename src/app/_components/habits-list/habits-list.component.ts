@@ -1,4 +1,3 @@
-// habits-list.component.ts
 import {
   Component,
   EventEmitter,
@@ -37,14 +36,28 @@ export class HabitsListComponent implements OnChanges {
   }
 
   loadHabitsForDate() {
-    this.summaryService.getHabitsByDate().subscribe((response: any) => {
-      this.habits = response.possibleHabits.map((habit: any) => ({
-        id: habit.id,
-        title: habit.title,
-        completed: response.completedHabits.includes(habit.id),
-      }));
-      this.emitCompletedCount();
-      this.cdr.detectChanges();
+    // CORREÇÃO: Formate a data para 'YYYY-MM-DD' para corresponder ao backend
+    const formattedDate = dayjs(this.date).format('YYYY-MM-DD');
+
+    this.summaryService.getHabitsByDate(formattedDate).subscribe({
+      next: (response: any) => {
+        if (response && Array.isArray(response)) {
+          this.habits = response.map((habit: any) => ({
+            id: habit.id,
+            title: habit.title,
+            completed: habit.completed,
+          }));
+          this.emitCompletedCount();
+        } else {
+          this.habits = [];
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar hábitos do dia:', err);
+        this.habits = [];
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -52,14 +65,14 @@ export class HabitsListComponent implements OnChanges {
     const index = this.habits.findIndex(h => h.id === habitId);
     if (index === -1) return;
 
-    const dateISO = dayjs(this.date).toISOString();
+    const formattedDate = dayjs(this.date).format('YYYY-MM-DD');
 
     const originalCompletedState = this.habits[index].completed;
       this.habits = this.habits.map((h, i) =>
         i === index ? { ...h, completed: !originalCompletedState } : h
       );
 
-    this.habitService.toggleHabit(habitId, dateISO).subscribe({
+    this.habitService.toggleHabit(habitId, formattedDate).subscribe({
       next: () => {
         this.emitCompletedCount();
         this.cdr.detectChanges();

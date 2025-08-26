@@ -1,17 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HabitSummary } from '../interfaces/habit-summary';
 import { environment } from '../../environments/environment';
-
-interface HabitsForDayResponse {
-  possibleHabits: {
-    id: string;
-    title: string;
-    created_at: string;
-  }[];
-  completedHabits: string[];
-}
+import { HabitDayResponse } from '../interfaces/habit-day-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +17,8 @@ export class SummaryService {
     return this.http.get<HabitSummary[]>(`${this.apiUrl}/summary/${startDate}/${endDate}`);
   }
 
-  getHabitsByDate(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/summary/day`);
+  getHabitsByDate(date: string): Observable<HabitDayResponse[]> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<HabitDayResponse[]>(`${this.apiUrl}/summary/day`, { params });
   }
 }
