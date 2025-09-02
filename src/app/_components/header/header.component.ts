@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
-import { NewHabitFormComponent } from "../new-habit-form/new-habit-form.component";
+import { HabitFormComponent } from "../habit-form/habit-form.component";
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { AuthService } from '../../services/auth.service';
 
@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
     CommonModule,
     DialogModule,
     ButtonModule,
-    NewHabitFormComponent,
+    HabitFormComponent,
     LoginFormComponent
   ],
   templateUrl: './header.component.html',

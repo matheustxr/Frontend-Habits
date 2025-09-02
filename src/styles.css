@@ -18,3 +18,30 @@
   background-color: transparent !important;
   border: transparent !important;
 }
+
+/* Estilos para o checkbox customizado */
+.custom-checkbox {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 0.3rem;
+  background-color: #3f3f46;
+  appearance: none;
+  cursor: pointer;
+}
+
+.custom-checkbox:checked {
+  background-color: #7c3aed;
+  border-color: transparent;
+  /* O SVG do ícone de checagem */
+  background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M9.00002 16.2L4.80002 12L3.40002 13.4L9.00002 19L21 7L19.6 5.6L9.00002 16.2Z\' fill=\'%23fff\'/%3E%3C/svg%3E');
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.custom-checkbox:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #3f3f46, 0 0 0 4px #7c3aed; /* focus:ring-2, focus:ring-offset-2, etc. */
+}

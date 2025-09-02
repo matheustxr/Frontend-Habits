@@ -6,12 +6,15 @@ import { HabitSummary } from '../../interfaces/habit-summary';
 import { HabitDayComponent } from '../../_components/habit-day/habit-day.component';
 import { HeaderComponent } from "../../_components/header/header.component";
 import dayjs from 'dayjs';
+import { Dialog } from "primeng/dialog";
+import { HabitFormComponent } from "../../_components/habit-form/habit-form.component";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, HabitDayComponent, HeaderComponent],
+  imports: [CommonModule, FormsModule, HabitDayComponent, HeaderComponent, Dialog, HabitFormComponent],
   templateUrl: './dashboard.component.html',
 })
+
 export class DashboardComponent implements OnInit {
   weekDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
   months = [
@@ -19,6 +22,9 @@ export class DashboardComponent implements OnInit {
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
   years = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i);
+
+  habitToEdit: any | null = null;
+  displayModal = false;
 
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth();
@@ -77,5 +83,14 @@ export class DashboardComponent implements OnInit {
     return this.summary.find((day) =>
       dayjs(day.date).isSame(date, 'day')
     );
+  }
+
+  onHabitSaved() {
+    this.updateCalendar();
+  }
+
+  onEditHabit(habit: any) {
+    this.habitToEdit = habit;
+    this.displayModal = true;
   }
 }

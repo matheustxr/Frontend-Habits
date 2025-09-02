@@ -2,17 +2,27 @@
   <div *ngFor="let habit of habits" class="flex items-center gap-3">
     <input
       type="checkbox"
-      [id]="'habit-' + habit.id"  [checked]="habit.completed"
-      (change)="toggleHabit(habit.id)" class="h-6 w-6 rounded bg-zinc-700 appearance-none
+      [id]="'habit-' + habit.id"
+      [checked]="habit.completed"
+      (change)="toggleHabit(habit.id)"
+      class="h-6 w-6 rounded bg-zinc-700 appearance-none
              checked:bg-violet-600 checked:border-transparent
              focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900
              focus:ring-violet-600 cursor-pointer"
-             
-             style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M9.00002 16.2L4.80002 12L3.40002 13.4L9.00002 19L21 7L19.6 5.6L9.00002 16.2Z\' fill=\'%23fff\'/%3E%3C/svg%3E');
-                    background-size: 80%; background-position: center; background-repeat: no-repeat;"
+      style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M9.00002 16.2L4.80002 12L3.40002 13.4L9.00002 19L21 7L19.6 5.6L9.00002 16.2Z\' fill=\'%23fff\'/%3E%3C/svg%3E');
+             background-size: 80%; background-position: center; background-repeat: no-repeat;"
     >
-    <label [for]="'habit-' + habit.id" class="text-zinc-400 leading-tight">
-      <span [ngClass]="{ 'line-through': habit.completed }">{{ habit.title }}</span>
+
+    <label
+      [for]="'habit-' + habit.id"
+      class="text-zinc-400 leading-tight w-full cursor-pointer"
+      (click)="toggleHabit(habit.id)"> <p [ngClass]="{ 'line-through': habit.completed }" class="block w-full">
+        {{ habit.title }}
+      </p>
     </label>
+
+    <span class="text-zinc-500 hover:text-white cursor-pointer" (click)="onEdit(habit.id)">
+      <i class="pi pi-pencil"></i>
+    </span>
   </div>
 </div>

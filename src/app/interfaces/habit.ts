@@ -1,4 +1,7 @@
 export interface Habit {
+  id?: string
   title: string,
-  weekDays: number[]
+  description: string | null,
+  weekDays: number[],
+  isActive: boolean
 }

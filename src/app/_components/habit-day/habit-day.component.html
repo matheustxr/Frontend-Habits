@@ -32,7 +32,6 @@
     }"
     #popoverContent
   >
-    <!-- Seta -->
     <div
       class="absolute w-3 h-3 rotate-45 bg-zinc-900"
       [ngClass]="{
@@ -42,7 +41,7 @@
     ></div>
 
     <div class="flex flex-col">
-      <span class="font-semibold text-white">{{ dayOfWeek }}</span>
+      <span class="font-semibold text-white capitalize">{{ dayOfWeek }}</span>
       <span class="mt-1 font-extrabold leading-tight text-3xl text-white">{{ dayAndMonth }}</span>
 
       <app-progress-bar [progress]="completedPercentage"></app-progress-bar>
@@ -50,6 +49,7 @@
       <app-habits-list
         [date]="date"
         (completedChange)="handleCompletedChanged($event)"
+        (editHabit)="onEditHabit($event)"
       ></app-habits-list>
     </div>
   </div>

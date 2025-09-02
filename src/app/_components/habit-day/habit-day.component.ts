@@ -6,13 +6,18 @@ import {
   ViewChild,
   AfterViewInit,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarComponent } from '../progress-bar/progress-bar.component';
 import { HabitsListComponent } from '../habits-list/habits-list.component';
 import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+
+dayjs.locale('pt-br');
 
 @Component({
   selector: 'app-habit-day',
@@ -23,6 +28,11 @@ export class HabitDayComponent implements AfterViewInit, OnChanges {
   @Input() date!: Date;
   @Input() defaultCompleted = 0;
   @Input() amount = 0;
+
+  @Output() editHabit = new EventEmitter<any>();
+  onEditHabit(habit: any) {
+    this.editHabit.emit(habit);
+  }
 
   @ViewChild('triggerWrapper') triggerWrapper!: ElementRef;
   @ViewChild('popoverContent') popoverContent!: ElementRef;

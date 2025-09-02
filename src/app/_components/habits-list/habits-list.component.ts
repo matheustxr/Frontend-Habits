@@ -14,12 +14,14 @@ import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-habits-list',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './habits-list.component.html',
 })
 export class HabitsListComponent implements OnChanges {
   @Input() date!: Date;
   @Output() completedChange = new EventEmitter<number>();
+  @Output() editHabit = new EventEmitter<any>();
 
   habits: Array<{ id: string; title: string; completed: boolean }> = [];
 
@@ -36,7 +38,6 @@ export class HabitsListComponent implements OnChanges {
   }
 
   loadHabitsForDate() {
-    // CORREÇÃO: Formate a data para 'YYYY-MM-DD' para corresponder ao backend
     const formattedDate = dayjs(this.date).format('YYYY-MM-DD');
 
     this.summaryService.getHabitsByDate(formattedDate).subscribe({
@@ -59,6 +60,13 @@ export class HabitsListComponent implements OnChanges {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onEdit(habitId: string) {
+    this.habitService.getHabitById(habitId).subscribe(
+      (habit) => this.editHabit.emit(habit),
+      (error) => console.error('Erro ao buscar hábito para edição:', error)
+    );
   }
 
   toggleHabit(habitId: string) {

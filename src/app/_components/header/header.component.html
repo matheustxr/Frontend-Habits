@@ -29,7 +29,7 @@
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
     class="bg-zinc-900"
   >
-    <app-new-habit-form *ngIf="authService.isLoggedIn()" />
+    <app-habit-form *ngIf="authService.isLoggedIn()" />
 
     <app-login-form *ngIf="!authService.isLoggedIn()" />
   </p-dialog>
