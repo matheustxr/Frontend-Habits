@@ -15,7 +15,7 @@
 
     <label
       [for]="'habit-' + habit.id"
-      class="text-zinc-400 leading-tight w-full cursor-pointer"
+      class="text-zinc-400 leading-tight w-max cursor-pointer"
       (click)="toggleHabit(habit.id)"> <p [ngClass]="{ 'line-through': habit.completed }" class="block w-full">
         {{ habit.title }}
       </p>
