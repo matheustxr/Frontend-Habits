@@ -26,8 +26,8 @@ export class DashboardComponent implements OnInit {
   habitToEdit: any | null = null;
   displayModal = false;
 
-  currentYear = new Date().getFullYear();
-  currentMonth = new Date().getMonth();
+  currentYear: number = new Date().getFullYear();
+  currentMonth: number = new Date().getMonth();
 
   dates: Date[] = [];
   leadingEmptyDays: number[] = [];
@@ -67,14 +67,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  onMonthChange(event: Event): void {
-    const value = parseInt((event.target as HTMLSelectElement).value, 10);
+  onMonthChange(value: number): void {
     this.currentMonth = value;
     this.updateCalendar();
   }
 
-  onYearChange(event: Event): void {
-    const value = parseInt((event.target as HTMLSelectElement).value, 10);
+  onYearChange(value: number): void {
     this.currentYear = value;
     this.updateCalendar();
   }
@@ -87,6 +85,7 @@ export class DashboardComponent implements OnInit {
 
   onHabitSaved() {
     this.updateCalendar();
+    this.displayModal = false;
   }
 
   onEditHabit(habit: any) {
