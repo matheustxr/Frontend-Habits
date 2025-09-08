@@ -16,7 +16,6 @@ export class HabitFormComponent implements OnChanges {
   @Output() habitSaved = new EventEmitter<void>();
 
   title = '';
-  /** flags[0] = domingo ... flags[6] = sábado */
   weekDaysFlags: boolean[] = Array(7).fill(false);
 
   availableWeekDays = [
@@ -29,7 +28,6 @@ export class HabitFormComponent implements OnChanges {
     'Sábado',
   ];
 
-  // Caso a API retorne nomes, normalizamos também
   private dayNameToIndex: Record<string, number> = {
     sunday: 0, monday: 1, tuesday: 2, wednesday: 3,
     thursday: 4, friday: 5, saturday: 6,
@@ -48,13 +46,11 @@ export class HabitFormComponent implements OnChanges {
     }
   }
 
-  /** Marca/Desmarca o índice no array de flags */
   toggleDay(index: number, event: Event) {
     const input = event.target as HTMLInputElement;
     this.weekDaysFlags[index] = input.checked;
   }
 
-  /** Converte number[] | string[] em boolean[7] */
   private toFlags(days: any[]): boolean[] {
     const flags = Array(7).fill(false) as boolean[];
     if (!Array.isArray(days)) return flags;
@@ -69,7 +65,6 @@ export class HabitFormComponent implements OnChanges {
     return flags;
   }
 
-  /** Converte boolean[7] em number[] (0..6) */
   private flagsToIndices(): number[] {
     const result: number[] = [];
     for (let i = 0; i < 7; i++) if (this.weekDaysFlags[i]) result.push(i);

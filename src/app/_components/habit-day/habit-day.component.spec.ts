@@ -1,6 +1,7 @@
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { HabitDayComponent } from './habit-day.component';
 
 describe('HabitDayComponent', () => {
@@ -9,7 +10,11 @@ describe('HabitDayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HabitDayComponent, HttpClientTestingModule]
+      imports: [HabitDayComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 
@@ -24,7 +29,7 @@ describe('HabitDayComponent', () => {
 
 
   it('should display the correct day of the month', () => {
-    const testDate = new Date(2025, 5, 26); // 26 de junho de 2025
+    const testDate = new Date(2025, 5, 26);
     component.date = testDate;
     fixture.detectChanges();
 
@@ -50,7 +55,6 @@ describe('HabitDayComponent', () => {
   });
 
 
-  //TESTE DE CALCULO DA PORCENTAGEM
   it('should calculate the correct completed percentage', () => {
     component.amount = 10;
     component.completed = 4;

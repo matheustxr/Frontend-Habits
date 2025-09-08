@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { HabitService } from '../../services/summary.service';
+import { SummaryService } from '../../services/summary.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
@@ -25,7 +25,7 @@ describe('DashboardComponent', () => {
     }
   ];
 
-  class MockHabitService {
+  class MockSummaryService {
     getSummary() {
       return {
         subscribe: (callback: (data: typeof mockSummary) => void) => {
@@ -39,7 +39,7 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
       providers: [
-        { provide: HabitService, useClass: MockHabitService },
+        { provide: SummaryService, useClass: MockSummaryService },
         AuthService,
         provideHttpClient(),
         provideHttpClientTesting()

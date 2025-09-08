@@ -1,4 +1,14 @@
+import { of, throwError } from 'rxjs';
 import { HabitSummary } from '../interfaces/habit-summary';
+
+export class MockSummaryService {
+  getHabitsByDate() {
+    return of([
+      { id: '1', title: 'Drink water', completed: true },
+      { id: '2', title: 'Exercise', completed: false }
+    ]);
+  }
+}
 
 export const mockSummary: HabitSummary[] = [
   {

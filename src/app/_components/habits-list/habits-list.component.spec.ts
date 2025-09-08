@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HabitService } from '../../services/summary.service';
+import { SummaryService } from '../../services/summary.service';
 import { MockHabitService } from '../../testing/habit-service.mock';
 import { HabitsListComponent } from './habits-list.component';
 import { ChangeDetectorRef } from '@angular/core';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
+import { HabitService } from '../../services/habit.service';
+import { MockSummaryService } from '../../testing/habit-summary';
 
 describe('HabitsListComponent', () => {
   let component: HabitsListComponent;
@@ -14,6 +16,7 @@ describe('HabitsListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HabitsListComponent],
       providers: [
+        { provide: SummaryService, useClass: MockSummaryService },
         { provide: HabitService, useClass: MockHabitService },
         ChangeDetectorRef
       ]
@@ -21,7 +24,7 @@ describe('HabitsListComponent', () => {
 
     fixture = TestBed.createComponent(HabitsListComponent);
     component = fixture.componentInstance;
-    mockService = TestBed.inject(HabitService) as any;
+    mockService = TestBed.inject(SummaryService) as any;
   });
 
   it('should create', () => {
@@ -77,7 +80,8 @@ describe('HabitsListComponent', () => {
   });
 
   it('should revert toggle on API error', async () => {
-    spyOn(mockService, 'toggleHabit').and.returnValue(throwError(() => new Error('Erro simulado')));
+    const habitService = TestBed.inject(HabitService) as any;
+    spyOn(habitService, 'toggleHabit').and.returnValue(throwError(() => new Error('Erro simulado')));
     const emitSpy = spyOn(component.completedChange, 'emit');
 
     const date = new Date();
@@ -106,4 +110,5 @@ describe('HabitsListComponent', () => {
     expect(component.habits[1].completed).toBeFalse();
     expect(emitSpy).toHaveBeenCalledTimes(2);
   });
+
 });
