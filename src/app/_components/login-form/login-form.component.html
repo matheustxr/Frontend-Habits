@@ -1,5 +1,5 @@
 <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="mx-auto w-full min-w-[300px] flex flex-col items-center gap-4">
-  <h2 class="text-2xl font-bold text-white text-center mb-4">Login</h2>
+  <!-- <h2 class="text-2xl font-bold text-white text-center mb-4">Login</h2> -->
 
   <app-text-input
     label="Email"
@@ -46,5 +46,12 @@
   @if(errorMessage) {
     <p class="text-red-400 text-center mt-2">{{ errorMessage }}</p>
   }
+
+  <p class="text-sm text-zinc-400 mt-4">
+    Não tem uma conta?
+    <a (click)="onSwitchForm()" class="text-violet-400 hover:underline font-semibold cursor-pointer">
+      Crie uma agora
+    </a>
+  </p>
 
 </form>

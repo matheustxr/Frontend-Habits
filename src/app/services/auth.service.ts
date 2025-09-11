@@ -17,20 +17,15 @@ export class AuthService {
     private cookieService: CookieService
   ) { }
 
+  createAccount(credentials: LoginCredentials): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/user`, credentials).pipe(
+      tap(response => this._setSession(response))
+    );
+  }
+
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
-        if (response && response.token) {
-          const expirationDate = new Date();
-          expirationDate.setMinutes(expirationDate.getMinutes() + this.TOKEN_EXPIRATION_MINUTES);
-
-          this.cookieService.set('authToken', response.token, expirationDate);
-
-          if (response.name) {
-            localStorage.setItem('userName', response.name);
-          }
-        }
-      })
+      tap(response => this._setSession(response))
     );
   }
 
@@ -45,5 +40,20 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.cookieService.check('authToken');
+  }
+
+
+
+  private _setSession(response: LoginResponse): void {
+    if (response && response.token) {
+      const expirationDate = new Date();
+      expirationDate.setMinutes(expirationDate.getMinutes() + this.TOKEN_EXPIRATION_MINUTES);
+
+      this.cookieService.set('authToken', response.token, expirationDate);
+
+      if (response.name) {
+        localStorage.setItem('userName', response.name);
+      }
+    }
   }
 }

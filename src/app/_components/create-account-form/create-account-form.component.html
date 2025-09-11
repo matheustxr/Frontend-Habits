@@ -1,0 +1,102 @@
+<form (ngSubmit)="onSubmit()" #createAccountForm="ngForm" class="mx-auto w-full min-w-[300px] flex flex-col items-center gap-4">
+  <!-- <h2 class="text-2xl font-bold text-white text-center mb-4">Criar Conta</h2> -->
+
+  <app-text-input
+    label="Nome"
+    placeholder="Digite seu nome completo"
+    name="name"
+    type="text"
+    [(ngModel)]="credentials.name"
+    required
+    #nameInput="ngModel"
+    class="w-full"
+  ></app-text-input>
+
+  @if (nameInput.invalid && (nameInput.dirty || nameInput.touched)) {
+    <div class="text-red-400 text-sm -mt-2 self-start">
+      <p>O nome é obrigatório.</p>
+    </div>
+  }
+
+  <app-text-input
+    label="Email"
+    placeholder="Digite seu email"
+    name="email"
+    type="email"
+    [(ngModel)]="credentials.email"
+    required
+    email
+    #emailInput="ngModel"
+    class="w-full"
+  ></app-text-input>
+
+  @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+    <div class="text-red-400 text-sm -mt-2 self-start">
+      @if (emailInput.errors?.['required']) {
+        <p>O email é obrigatório.</p>
+      }
+      @if (emailInput.errors?.['email']) {
+        <p>Por favor, insira um email válido.</p>
+      }
+    </div>
+  }
+
+  <app-text-input
+    label="Senha"
+    placeholder="Crie sua senha"
+    name="password"
+    type="password"
+    [(ngModel)]="credentials.password"
+    required
+    #passwordInput="ngModel"
+    class="w-full"
+    (focus)="isPasswordFocused = true"
+    (blur)="isPasswordFocused = false"
+  ></app-text-input>
+
+  @if (isPasswordFocused) {
+    <div class="text-zinc-400 text-xs self-start -mt-2">
+      <p>A senha deve conter:</p>
+      <ul class="list-disc list-inside ml-2">
+        <li>Pelo menos uma letra maiúscula (A-Z)</li>
+        <li>Pelo menos uma letra minúscula (a-z)</li>
+        <li>Pelo menos um número (0-9)</li>
+        <li>Pelo menos um caractere especial (!&#64;#$)</li>
+      </ul>
+    </div>
+  }
+
+  @if (passwordStrengthError && (passwordInput.dirty || passwordInput.touched)) {
+    <p class="text-red-400 text-sm -mt-2 self-start">{{ passwordStrengthError }}</p>
+  }
+
+  <app-text-input
+    label="Confirmar Senha"
+    placeholder="Digite sua senha novamente"
+    name="confirmPassword"
+    type="password"
+    [(ngModel)]="confirmPassword"
+    required
+    #confirmPasswordInput="ngModel"
+    class="w-full"
+  ></app-text-input>
+
+  @if (credentials.password !== confirmPassword && (confirmPasswordInput.dirty || confirmPasswordInput.touched)) {
+    <div class="text-red-400 text-sm -mt-2 self-start">
+      <p>As senhas não correspondem.</p>
+    </div>
+  }
+
+
+  <button
+    type="submit"
+    [disabled]="!createAccountForm.valid || (credentials.password !== confirmPassword)"
+    class="w-full mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    Criar Conta
+  </button>
+
+  @if(errorMessage) {
+    <p class="text-red-400 text-center mt-2">{{ errorMessage }}</p>
+  }
+</form>

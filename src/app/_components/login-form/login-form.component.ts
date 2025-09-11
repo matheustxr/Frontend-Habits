@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextInputComponent } from '../text-input/text-input.component';
 import { AuthService } from '../../services/auth.service';
@@ -23,6 +23,12 @@ export class LoginFormComponent {
     private authService: AuthService,
     private router: Router
   ) {}
+
+  @Output() switchToCreateAccount = new EventEmitter<void>();
+
+  onSwitchForm(): void {
+    this.switchToCreateAccount.emit();
+  }
 
   onSubmit(): void {
     this.errorMessage = null;

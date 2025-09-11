@@ -4,6 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { HabitFormComponent } from "../habit-form/habit-form.component";
 import { LoginFormComponent } from '../login-form/login-form.component';
+import { CreateAccountFormComponent } from '../create-account-form/create-account-form.component'; // Importe o novo componente
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,23 +14,31 @@ import { AuthService } from '../../services/auth.service';
     DialogModule,
     ButtonModule,
     HabitFormComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    CreateAccountFormComponent
   ],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
   displayModal = false;
   modalHeader = '';
+  showCreateAccountForm = false;
 
   constructor(public authService: AuthService) {}
 
-  showModal() {
+  showModal(): void {
+    console.log('Usuário está logado?', this.authService.isLoggedIn());
     if (this.authService.isLoggedIn()) {
       this.modalHeader = 'Criar hábito';
     } else {
-      this.modalHeader = '';
+      this.showCreateAccountForm = false;
+      this.modalHeader = 'Entrar';
     }
-
     this.displayModal = true;
+  }
+
+  toggleFormView(): void {
+    this.showCreateAccountForm = !this.showCreateAccountForm;
+    this.modalHeader = this.showCreateAccountForm ? 'Criar Conta' : 'Entrar';
   }
 }

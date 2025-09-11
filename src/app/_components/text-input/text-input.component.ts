@@ -1,8 +1,11 @@
-import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-text-input',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './text-input.component.html',
   providers: [
     {
@@ -12,19 +15,41 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-
 export class TextInputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() placeholder: string = '';
   @Input() name: string = '';
-  @Input() type: string = 'text'
+  @Input() type: string = 'text';
+  private _required = false;
+  private _email = false;
+
+  @Input()
+  set required(value: boolean | string) {
+    this._required = value === '' || value === true;
+  }
+  get required(): boolean {
+    return this._required;
+  }
+
+  @Input()
+  set email(value: boolean | string) {
+    this._email = value === '' || value === true;
+  }
+  get email(): boolean {
+    return this._email;
+  }
+
+  @Output() focus = new EventEmitter<void>();
+  @Output() blur = new EventEmitter<void>();
 
   value: string = '';
 
-  onChange: (value: any) => void = () => {};
+  onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
 
-  writeValue(value: any): void {
+  constructor() { }
+
+  writeValue(value: string): void {
     this.value = value;
   }
 
@@ -38,12 +63,7 @@ export class TextInputComponent implements ControlValueAccessor {
 
   onInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    const newValue = target.value;
-
-    this.value = newValue;
-
-    this.onChange(newValue);
-
-    this.onTouched();
+    this.value = target.value;
+    this.onChange(this.value);
   }
 }

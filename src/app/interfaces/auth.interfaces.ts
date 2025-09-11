@@ -3,6 +3,10 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface CreateAccountCredentials extends LoginCredentials {
+  name: string;
+}
+
 export interface LoginResponse {
   name: string;
   token: string;

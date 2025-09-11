@@ -63,8 +63,9 @@ export class DashboardComponent implements OnInit {
     const endDate = dayjs(this.dates[this.dates.length - 1]).format('YYYY-MM-DD');
 
     this.summaryService.getSummary(startDate, endDate).subscribe((data) => {
-      this.summary = data;
-    });
+
+    this.summary = data || [];
+  });
   }
 
   onMonthChange(value: number): void {
