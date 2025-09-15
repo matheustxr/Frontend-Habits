@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
-import { HabitFormComponent } from "../habit-form/habit-form.component";
+import { MenuModule } from 'primeng/menu';
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { CreateAccountFormComponent } from '../create-account-form/create-account-form.component'; // Importe o novo componente
 import { AuthService } from '../../services/auth.service';
+import { MenuItem } from 'primeng/api';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Router } from '@angular/router';
+import { AppEventsService } from '../../services/app-events.service';
 
 @Component({
   selector: 'app-header',
@@ -13,27 +17,77 @@ import { AuthService } from '../../services/auth.service';
     CommonModule,
     DialogModule,
     ButtonModule,
-    HabitFormComponent,
     LoginFormComponent,
-    CreateAccountFormComponent
+    CreateAccountFormComponent,
+    MenuModule
   ],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   displayModal = false;
-  modalHeader = '';
+  modalHeader = 'Entrar';
   showCreateAccountForm = false;
+  private eventsSubscription!: Subscription;
 
-  constructor(public authService: AuthService) {}
+  userName: string | null = null;
+  userMenuItems: MenuItem[] = [];
+
+  constructor(
+    public authService: AuthService,
+    private appEventsService: AppEventsService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.eventsSubscription = this.appEventsService.formSuccess$.subscribe(() => {
+      this.displayModal = false;
+      this.updateUserInfo();
+    });
+
+    this.updateUserInfo();
+  }
+
+  ngOnDestroy(): void {
+    this.eventsSubscription.unsubscribe();
+  }
+
+  updateUserInfo(): void {
+    if (this.authService.isLoggedIn()) {
+      this.userName = localStorage.getItem('userName');
+      this.setupUserMenu();
+    } else {
+      this.userName = null;
+    }
+  }
+
+  setupUserMenu(): void {
+    this.userMenuItems = [
+      {
+        label: 'Meu Perfil',
+        icon: 'pi pi-fw pi-user-edit',
+        command: () => this.router.navigate(['/profile'])
+      },
+      {
+        label: 'Alterar Senha',
+        icon: 'pi pi-fw pi-key',
+        command: () => this.router.navigate(['/change-password'])
+      },
+      { separator: true },
+      {
+        label: 'Sair',
+        icon: 'pi pi-fw pi-sign-out',
+        command: () => this.logout()
+      }
+    ];
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.updateUserInfo();
+    this.router.navigate(['/']);
+  }
 
   showModal(): void {
-    console.log('Usuário está logado?', this.authService.isLoggedIn());
-    if (this.authService.isLoggedIn()) {
-      this.modalHeader = 'Criar hábito';
-    } else {
-      this.showCreateAccountForm = false;
-      this.modalHeader = 'Entrar';
-    }
     this.displayModal = true;
   }
 

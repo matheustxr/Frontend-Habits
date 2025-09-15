@@ -1,24 +1,32 @@
 <header>
-  <div class="w-full max-w-2xl mx-auto flex items-center justify-between">
+  <div class="w-full max-w-5xl mx-auto flex items-center justify-between">
     <img src="/logo.svg" alt="Habits" />
 
-    <button
-      *ngIf="authService.isLoggedIn()"
-      (click)="showModal()"
-      class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors focus:outline focus:ring-2 focus:ring-violet-800 focus:ring-offset-2 focus:ring-offset-background"
-    >
-      <i class="pi pi-plus text-violet-500"></i>
-      Novo Hábito
-    </button>
+    <ng-container *ngIf="!authService.isLoggedIn()">
+      <button
+        (click)="showModal()"
+        class="flex gap-2 items-center text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 hover:border-violet-300 transition-colors"
+      >
+        <i class="pi pi-user text-violet-500"></i>
+        Entrar
+      </button>
+    </ng-container>
 
-    <button
-      *ngIf="!authService.isLoggedIn()"
-      (click)="showModal()"
-      class="flex gap-2 items-center text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 hover:border-violet-300 transition-colors"
-    >
-      <i class="pi pi-user text-violet-500"></i>
-      Entrar
-    </button>
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <div class="flex items-center gap-4">
+        <button
+          (click)="menu.toggle($event)"
+          class="flex items-center gap-3 text-white p-3 border border-violet-500 rounded-lg hover:bg-zinc-800 transition-colors"
+          aria-label="Menu do usuário"
+        >
+          <i class="pi pi-user text-xl"></i>
+          <span class="font-semibold">{{ userName }}</span>
+          <i class="pi pi-chevron-down text-sm"></i>
+        </button>
+
+        <p-menu #menu [model]="userMenuItems" [popup]="true"></p-menu>
+      </div>
+    </ng-container>
   </div>
 
   <p-dialog
@@ -26,11 +34,9 @@
     [(visible)]="displayModal"
     [modal]="true"
     [closable]="true"
-    [breakpoints]="{ '1500px': '35vw', '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
+    [breakpoints]="{ '1500px': '40vw', '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
     class="bg-zinc-900"
   >
-    <app-habit-form *ngIf="authService.isLoggedIn()" />
-
     <ng-container *ngIf="!authService.isLoggedIn()">
 
       <app-login-form
