@@ -1,0 +1,44 @@
+<form (ngSubmit)="onSubmit()" #profileForm="ngForm" class="mx-auto w-full min-w-[300px] flex flex-col items-center gap-4">
+
+  <app-text-input
+    label="Nome"
+    placeholder="Seu nome completo"
+    name="name"
+    type="text"
+    [(ngModel)]="userData.name"
+    required
+    #nameInput="ngModel"
+    class="w-full"
+  ></app-text-input>
+
+  <app-text-input
+    label="Email"
+    placeholder="Seu email"
+    name="email"
+    type="email"
+    [(ngModel)]="userData.email"
+    required
+    email
+    #emailInput="ngModel"
+    class="w-full"
+  ></app-text-input>
+
+  <button
+    type="submit"
+    [disabled]="!profileForm.valid || isLoading"
+    class="w-full mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    @if (isLoading) {
+      <span>Salvando...</span>
+    } @else {
+      <span>Salvar Alterações</span>
+    }
+  </button>
+
+  @if(successMessage) {
+    <p class="text-green-400 text-center mt-2">{{ successMessage }}</p>
+  }
+  @if(errorMessage) {
+    <p class="text-red-400 text-center mt-2">{{ errorMessage }}</p>
+  }
+</form>

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextInputComponent } from '../text-input/text-input.component';
 import { AuthService } from '../../services/auth.service';
-import { LoginCredentials } from '../../interfaces/auth.interfaces';
+import { LoginCredentials } from '../../interfaces/auth.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({

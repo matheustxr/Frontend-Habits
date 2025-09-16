@@ -37,17 +37,23 @@
     [breakpoints]="{ '1500px': '40vw', '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
     class="bg-zinc-900"
   >
-    <ng-container *ngIf="!authService.isLoggedIn()">
+    @switch (modalContent) {
+      @case ('auth') {
+        <ng-container>
+          <app-login-form
+            *ngIf="!showCreateAccountForm"
+            (switchToCreateAccount)="toggleFormView()"
+          />
+          <app-create-account-form
+            *ngIf="showCreateAccountForm"
+            (switchToLogin)="toggleFormView()"
+          />
+        </ng-container>
+      }
 
-      <app-login-form
-        *ngIf="!showCreateAccountForm"
-        (switchToCreateAccount)="toggleFormView()"
-      />
-
-      <app-create-account-form
-        *ngIf="showCreateAccountForm"
-        (switchToLogin)="toggleFormView()"
-      />
-    </ng-container>
+      @case ('profile') {
+        <app-profile-form />
+      }
+    }
   </p-dialog>
 </header>

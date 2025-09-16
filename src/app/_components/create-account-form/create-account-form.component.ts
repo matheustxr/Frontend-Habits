@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CreateAccountCredentials } from '../../interfaces/auth.interfaces';
+import { CreateAccountCredentials } from '../../interfaces/auth.model';
 import { AuthService } from '../../services/auth.service';
 import { TextInputComponent } from "../text-input/text-input.component";
 import { NgIf } from '@angular/common';

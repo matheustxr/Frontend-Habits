@@ -4,12 +4,13 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { LoginFormComponent } from '../login-form/login-form.component';
-import { CreateAccountFormComponent } from '../create-account-form/create-account-form.component'; // Importe o novo componente
+import { CreateAccountFormComponent } from '../create-account-form/create-account-form.component';
 import { AuthService } from '../../services/auth.service';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
 import { AppEventsService } from '../../services/app-events.service';
+import { ProfileFormComponent } from '../profile-form/profile-form.component';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,8 @@ import { AppEventsService } from '../../services/app-events.service';
     ButtonModule,
     LoginFormComponent,
     CreateAccountFormComponent,
-    MenuModule
+    MenuModule,
+    ProfileFormComponent,
   ],
   templateUrl: './header.component.html',
 })
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   modalHeader = 'Entrar';
   showCreateAccountForm = false;
   private eventsSubscription!: Subscription;
+  modalContent: 'auth' | 'habit' | 'profile' | null = null;
 
   userName: string | null = null;
   userMenuItems: MenuItem[] = [];
@@ -65,7 +68,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Meu Perfil',
         icon: 'pi pi-fw pi-user-edit',
-        command: () => this.router.navigate(['/profile'])
+        command: () => this.showProfileModal()
       },
       {
         label: 'Alterar Senha',
@@ -88,6 +91,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   showModal(): void {
+    this.displayModal = true;
+  }
+
+  showProfileModal(): void {
+    this.modalContent = 'profile';
+    this.modalHeader = 'Meu Perfil';
     this.displayModal = true;
   }
 
