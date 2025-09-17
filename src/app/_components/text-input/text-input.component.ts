@@ -44,6 +44,19 @@ export class TextInputComponent implements ControlValueAccessor {
 
   value: string = '';
 
+  isPasswordVisible = false;
+
+  get inputType(): string {
+    if (this.type !== 'password') {
+      return this.type;
+    }
+    return this.isPasswordVisible ? 'text' : 'password';
+  }
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
   onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
 
