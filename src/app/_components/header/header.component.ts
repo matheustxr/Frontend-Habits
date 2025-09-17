@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
 import { AppEventsService } from '../../services/app-events.service';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
+import { ChangePasswordFormComponent } from '../change-password-form/change-password-form.component';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ import { ProfileFormComponent } from '../profile-form/profile-form.component';
     CreateAccountFormComponent,
     MenuModule,
     ProfileFormComponent,
+    ChangePasswordFormComponent
   ],
   templateUrl: './header.component.html',
 })
@@ -30,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   modalHeader = 'Entrar';
   showCreateAccountForm = false;
   private eventsSubscription!: Subscription;
-  modalContent: 'auth' | 'habit' | 'profile' | null = null;
+  modalContent: 'auth' | 'habit' | 'profile' | 'change-password' | null = null;
 
   userName: string | null = null;
   userMenuItems: MenuItem[] = [];
@@ -73,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Alterar Senha',
         icon: 'pi pi-fw pi-key',
-        command: () => this.router.navigate(['/change-password'])
+        command: () => this.showChangePasswordModal()
       },
       { separator: true },
       {
@@ -100,6 +102,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showProfileModal(): void {
     this.modalContent = 'profile';
     this.modalHeader = 'Meu Perfil';
+    this.displayModal = true;
+  }
+
+  showChangePasswordModal(): void {
+    this.modalContent = 'change-password';
+    this.modalHeader = 'Alterar Senha';
     this.displayModal = true;
   }
 

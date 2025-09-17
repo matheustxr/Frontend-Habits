@@ -4,6 +4,6 @@ export interface UserProfile {
 }
 
 export interface ChangePasswordRequest {
-  currentPassword: string;
+  password: string;
   newPassword: string;
 }
