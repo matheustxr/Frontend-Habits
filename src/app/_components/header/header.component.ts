@@ -90,7 +90,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  showModal(): void {
+  showAuthModal(): void {
+    this.modalContent = 'auth';
+    this.modalHeader = 'Entrar';
+    this.showCreateAccountForm = false;
     this.displayModal = true;
   }
 
