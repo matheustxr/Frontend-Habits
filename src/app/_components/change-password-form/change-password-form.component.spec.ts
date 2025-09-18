@@ -15,7 +15,6 @@ describe('ChangePasswordFormComponent', () => {
   let appEventsServiceSpy: jasmine.SpyObj<AppEventsService>;
 
   beforeEach(async () => {
-    // Definimos o comportamento dos espiões
     const userServiceMock = jasmine.createSpyObj('UserService', ['changePassword']);
     const appEventsServiceMock = jasmine.createSpyObj('AppEventsService', ['notifyFormSuccess']);
 
