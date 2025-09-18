@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { CreateAccountCredentials } from '../../interfaces/auth.model';
 import { AuthService } from '../../services/auth.service';
 import { TextInputComponent } from "../text-input/text-input.component";
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-create-account-form',
