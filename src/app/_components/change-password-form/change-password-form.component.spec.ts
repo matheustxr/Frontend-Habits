@@ -5,7 +5,6 @@ import { ChangePasswordFormComponent } from './change-password-form.component';
 import { UserService } from '../../services/user.service';
 import { AppEventsService } from '../../services/app-events.service';
 import { TextInputComponent } from '../text-input/text-input.component';
-import { HttpErrorResponse } from '@angular/common/http';
 
 describe('ChangePasswordFormComponent', () => {
   let component: ChangePasswordFormComponent;
