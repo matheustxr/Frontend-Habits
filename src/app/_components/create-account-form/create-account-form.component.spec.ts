@@ -14,7 +14,6 @@ describe('CreateAccountFormComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    // Definimos o comportamento dos espiões
     const authServiceMock = jasmine.createSpyObj('AuthService', ['createAccount']);
     const routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
