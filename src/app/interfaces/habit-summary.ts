@@ -1,5 +1,5 @@
 export interface HabitSummary {
-  id: string;
+  id: number;
   date: string;
   completed: number;
   amount: number;

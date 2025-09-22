@@ -1,0 +1,11 @@
+<div class="mb-2 p-4 flex items-center justify-between bg-zinc-900 rounded-lg">
+  <span class="font-medium">{{ item.name }}</span>
+  <div class="flex items-center gap-4">
+    <button (click)="edit.emit(item)" class="text-zinc-400 hover:text-violet-400" aria-label="Editar">
+      <i class="pi pi-pencil text-xl"></i>
+    </button>
+    <button (click)="delete.emit(item)" class="text-zinc-400 hover:text-red-500" aria-label="Excluir">
+      <i class="pi pi-trash text-xl"></i>
+    </button>
+  </div>
+</div>

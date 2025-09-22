@@ -1,0 +1,40 @@
+<div class="w-full max-w-5xl mx-auto min-h-screen p-5 md:pt-10 text-white">
+  <header class="flex items-center justify-between pb-4 border-b border-zinc-800">
+    <h1 class="text-3xl font-bold">{{ title }}</h1>
+    <button (click)="handleAddItem()" class="flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors px-4 py-2 rounded-lg">
+      <i class="pi pi-plus"></i>
+      <span>Adicionar Novo</span>
+    </button>
+  </header>
+
+  <main class="mt-8">
+    @if (items.length > 0) {
+      <ul class="space-y-3">
+        @for (item of items; track item.id) {
+          <app-managed-item
+            [item]="item"
+            (edit)="handleEditItem($event)"
+            (delete)="handleDeleteItem($event)"
+          />
+        }
+      </ul>
+    } @else {
+      <p class="text-zinc-500 text-center mt-10">Nenhum item encontrado. Clique em "Adicionar Novo" para começar.</p>
+    }
+  </main>
+</div>
+
+<p-dialog
+  [(visible)]="displayModal"
+  [modal]="true"
+  [header]="itemToEdit ? 'Editar ' + title.slice(0, -1) : 'Criar ' + title.slice(0, -1)"
+  [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+>
+  @if (type === 'habits') {
+    <app-habit-form [habitToEdit]="itemToEdit" (habitSaved)="onItemSaved()" />
+  }
+  @if (type === 'categories') {
+    <p>Formulário de Categoria (a ser criado).</p>
+  }
+</p-dialog>

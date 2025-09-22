@@ -8,9 +8,9 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HabitService } from '../../services/habit.service';
 import { SummaryService } from '../../services/summary.service';
 import dayjs from 'dayjs';
+import { HabitService } from '../../services/habit.service';
 
 @Component({
   selector: 'app-habits-list',
@@ -23,7 +23,7 @@ export class HabitsListComponent implements OnChanges {
   @Output() completedChange = new EventEmitter<number>();
   @Output() editHabit = new EventEmitter<any>();
 
-  habits: Array<{ id: string; title: string; completed: boolean }> = [];
+  habits: Array<{ id: number; title: string; completed: boolean }> = [];
 
   constructor(
     private habitService: HabitService,
@@ -62,14 +62,14 @@ export class HabitsListComponent implements OnChanges {
     });
   }
 
-  onEdit(habitId: string) {
+  onEdit(habitId: number) {
     this.habitService.getHabitById(habitId).subscribe(
       (habit) => this.editHabit.emit(habit),
       (error) => console.error('Erro ao buscar hábito para edição:', error)
     );
   }
 
-  toggleHabit(habitId: string) {
+  toggleHabit(habitId: number) {
     const index = this.habits.findIndex(h => h.id === habitId);
     if (index === -1) return;
 
@@ -80,7 +80,7 @@ export class HabitsListComponent implements OnChanges {
         i === index ? { ...h, completed: !originalCompletedState } : h
       );
 
-    this.habitService.toggleHabit(habitId, formattedDate).subscribe({
+    this.habitService.toggleHabitCompletion(habitId, formattedDate).subscribe({
       next: () => {
         this.emitCompletedCount();
         this.cdr.detectChanges();

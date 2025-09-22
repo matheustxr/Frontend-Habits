@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TextInputComponent } from '../text-input/text-input.component';
 import { HabitService } from '../../services/habit.service';
-import { Habit } from '../../interfaces/habit';
+import { Habit } from '../../interfaces/habit.model';
 
 @Component({
   selector: 'app-habit-form',

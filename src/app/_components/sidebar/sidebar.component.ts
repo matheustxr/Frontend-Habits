@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class SidebarComponent {
   navLinks = [
     { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/dashboard' },
-    { label: 'Meus Hábitos', icon: 'pi pi-clone', routerLink: '/habits' },
-    { label: 'Categorias', icon: 'pi pi-tags', routerLink: '/categories' },
+    { label: 'Meus Hábitos', icon: 'pi pi-clone', routerLink: '/manage/habits' },
+    { label: 'Categorias', icon: 'pi pi-tags', routerLink: '/manage/categories' },
   ];
 }

@@ -4,7 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { HabitService } from '../../services/habit.service';
-import { Habit } from '../../interfaces/habit';
+import { Habit } from '../../interfaces/habit.model';
 import { HabitFormComponent } from './habit-form.component';
 import { TextInputComponent } from '../text-input/text-input.component';
 
