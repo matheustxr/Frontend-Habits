@@ -1,0 +1,17 @@
+<aside class="w-64 bg-zinc-900 p-6 fixed top-0 left-0 h-screen">
+  <img src="/logo.svg" alt="Habits" class="mx-auto mb-10" />
+
+  <nav class="space-y-4">
+    @for (link of navLinks; track link.label) {
+      <a
+        [routerLink]="link.routerLink"
+        routerLinkActive="bg-violet-600 text-white"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center gap-3 p-3 rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+      >
+        <i [class]="link.icon" class="text-2xl"></i>
+        <span class="font-semibold">{{ link.label }}</span>
+      </a>
+    }
+  </nav>
+</aside>
