@@ -1,29 +1,30 @@
-<div class="w-full max-w-5xl mx-auto min-h-screen p-5 md:pt-10 text-white">
-  <header class="flex items-center justify-between pb-4 border-b border-zinc-800">
-    <h1 class="text-3xl font-bold">{{ title }}</h1>
-    <button (click)="handleAddItem()" class="flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors px-4 py-2 rounded-lg">
-      <i class="pi pi-plus"></i>
-      <span>Adicionar Novo</span>
-    </button>
-  </header>
+<div class="bg-black">
+  <div class="w-full max-w-5xl mx-auto min-h-screen p-5 md:pt-10 text-white">
+    <header class="flex items-center justify-between pb-4 border-b border-zinc-800">
+      <h1 class="text-3xl font-bold">{{ title }}</h1>
+      <button (click)="handleAddItem()" class="flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors px-4 py-2 rounded-lg">
+        <i class="pi pi-plus"></i>
+        <span>Adicionar Novo</span>
+      </button>
+    </header>
 
-  <main class="mt-8">
-    @if (items.length > 0) {
-      <ul class="space-y-3">
-        @for (item of items; track item.id) {
-          <app-managed-item
-            [item]="item"
-            (edit)="handleEditItem($event)"
-            (delete)="handleDeleteItem($event)"
-          />
-        }
-      </ul>
-    } @else {
-      <p class="text-zinc-500 text-center mt-10">Nenhum item encontrado. Clique em "Adicionar Novo" para começar.</p>
-    }
-  </main>
+    <main class="mt-8">
+      @if (items.length > 0) {
+        <ul class="space-y-3">
+          @for (item of items; track item.id) {
+            <app-managed-item
+              [item]="item"
+              (edit)="handleEditItem($event)"
+              (delete)="handleDeleteItem($event)"
+            />
+          }
+        </ul>
+      } @else {
+        <p class="text-zinc-500 text-center mt-10">Nenhum item encontrado. Clique em "Adicionar Novo" para começar.</p>
+      }
+    </main>
+  </div>
 </div>
-
 <p-dialog
   [(visible)]="displayModal"
   [modal]="true"
