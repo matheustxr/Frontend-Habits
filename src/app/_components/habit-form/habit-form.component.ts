@@ -12,6 +12,9 @@ import { Habit } from '../../interfaces/habit.model';
   templateUrl: './habit-form.component.html',
 })
 export class HabitFormComponent implements OnChanges {
+  description(description: any) {
+    throw new Error('Method not implemented.');
+  }
   @Input() habitToEdit: Habit | null = null;
   @Output() habitSaved = new EventEmitter<void>();
 

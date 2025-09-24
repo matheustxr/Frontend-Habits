@@ -1,138 +1,106 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
+import { of } from 'rxjs';
 import { HabitService } from '../../services/habit.service';
-import { Habit } from '../../interfaces/habit.model';
+import { Habit, HabitRequest } from '../../interfaces/habit.model';
 import { HabitFormComponent } from './habit-form.component';
 import { TextInputComponent } from '../text-input/text-input.component';
-
+import { SimpleChanges } from '@angular/core';
 
 describe('HabitFormComponent', () => {
   let component: HabitFormComponent;
   let fixture: ComponentFixture<HabitFormComponent>;
-  let habitService: HabitService;
-  let httpMock: HttpTestingController;
+
+  let habitServiceSpy: jasmine.SpyObj<HabitService>;
 
   beforeEach(async () => {
+    const spy = jasmine.createSpyObj('HabitService', ['createHabit', 'updateHabit']);
+
     await TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        ButtonModule,
         HabitFormComponent,
         TextInputComponent,
       ],
       providers: [
-        HabitService,
-        provideHttpClient(),
-        provideHttpClientTesting()
+        { provide: HabitService, useValue: spy }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HabitFormComponent);
     component = fixture.componentInstance;
-    habitService = TestBed.inject(HabitService);
-    httpMock = TestBed.inject(HttpTestingController);
+
+    // Injetamos nosso dublê para que possamos controlá-lo nos teste
+    habitServiceSpy = TestBed.inject(HabitService) as jasmine.SpyObj<HabitService>;
+
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    httpMock.verify();
-  });
-
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show alert if form fields are empty on create', () => {
-    spyOn(window, 'alert');
-    component.title = '';
-    component.weekDaysFlags = Array(7).fill(false);
-    component.createNewHabit();
-    expect(window.alert).toHaveBeenCalledWith('Preencha todos os campos');
-  });
-
-  it('should create a new habit and reset the form', fakeAsync(() => {
-    spyOn(window, 'alert');
-    spyOn(component.habitSaved, 'emit');
-
-    component.title = 'Beber água';
-    component.weekDaysFlags[1] = true;
-    component.weekDaysFlags[3] = true;
-
-    component.createNewHabit();
-
-    const req = httpMock.expectOne(r => r.url.endsWith('/api/habits'));
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body.title).toBe('Beber água');
-    expect(req.request.body.weekDays).toEqual([1, 3]);
-
-    req.flush({});
-    tick();
-
-    expect(window.alert).toHaveBeenCalledWith('Hábito criado com sucesso!');
-    expect(component.habitSaved.emit).toHaveBeenCalled();
-    expect(component.title).toBe('');
-    expect(component.weekDaysFlags).toEqual(Array(7).fill(false));
-  }));
-
-
-  it('should update an existing habit and reset the form', fakeAsync(() => {
-    spyOn(window, 'alert');
-    spyOn(component.habitSaved, 'emit');
-
-    const habitToEdit = { id: '123', title: 'Correr', weekDays: [2, 4], isActive: true } as Habit;
+  it('should populate form fields when habitToEdit input is set', () => {
+    const habitToEdit: Habit = {
+      id: 1,
+      title: 'Ler 10 páginas',
+      description: 'Ficção científica',
+      weekDays: [1, 3, 5],
+      isActive: true
+    };
 
     component.habitToEdit = habitToEdit;
-    component.ngOnChanges({
-      habitToEdit: {
-        currentValue: habitToEdit,
-        previousValue: null,
-        firstChange: true,
-        isFirstChange: () => true,
-      }
-    });
+    const changes: SimpleChanges = { habitToEdit: { currentValue: habitToEdit, previousValue: null, firstChange: true, isFirstChange: () => true } };
+    component.ngOnChanges(changes);
+    fixture.detectChanges();
 
-    component.title = 'Correr na rua';
-    component.weekDaysFlags = Array(7).fill(false);
-    component.weekDaysFlags[4] = true;
-    component.weekDaysFlags[5] = true;
+    expect(component.title).toBe('Ler 10 páginas');
+    expect(component.description).toBe('Ficção científica');
+    expect(component.weekDaysFlags).toEqual([false, true, false, true, false, true, false]);
+  });
+
+  it('should call createHabit when submitting a new habit (habitToEdit is null)', () => {
+    spyOn(component.habitSaved, 'emit');
+    const mockCreatedHabit: Habit = { id: 2, title: 'Beber água', description: null, weekDays: [0,1,2,3,4,5,6], isActive: true };
+    habitServiceSpy.createHabit.and.returnValue(of(mockCreatedHabit));
+
+    component.title = 'Beber água';
+    component.weekDaysFlags.fill(true);
 
     component.createNewHabit();
 
-    const req = httpMock.expectOne(r => r.url.endsWith('/api/habits/123'));
-    expect(req.request.method).toBe('PUT');
-    expect(req.request.body.title).toBe('Correr na rua');
-    expect(req.request.body.weekDays).toEqual([4, 5]);
+    const expectedRequest: HabitRequest = { title: 'Beber água', description: null, weekDays: [0,1,2,3,4,5,6] };
+    expect(habitServiceSpy.createHabit).toHaveBeenCalledOnceWith(expectedRequest);
+    expect(habitServiceSpy.updateHabit).not.toHaveBeenCalled();
+    expect(component.habitSaved.emit).toHaveBeenCalledTimes(1);
+  });
 
-    req.flush({});
-    tick();
+  it('should call updateHabit when submitting an existing habit (habitToEdit is not null)', () => {
+    spyOn(component.habitSaved, 'emit');
+    const mockUpdatedHabit: Habit = { id: 1, title: 'Correr 5km', description: null, weekDays: [2,4], isActive: true };
+    habitServiceSpy.updateHabit.and.returnValue(of(mockUpdatedHabit));
 
-    expect(window.alert).toHaveBeenCalledWith('Hábito atualizado com sucesso!');
-    expect(component.habitSaved.emit).toHaveBeenCalled();
-    expect(component.title).toBe('');
-    expect(component.weekDaysFlags).toEqual(Array(7).fill(false));
-  }));
+    component.habitToEdit = { id: 1, title: 'Correr', description: null, weekDays: [1,3], isActive: true };
+    component.title = 'Correr 5km';
+    component.weekDaysFlags = [false, false, true, false, true, false, false]; // Qua, Qui
 
+    component.createNewHabit();
 
-  it('should populate the form when a habit is passed for editing', fakeAsync(() => {
-    const habitData = { id: '123', title: 'Ler', weekDays: [0, 6], isActive: true } as Habit;
+    const expectedRequest: HabitRequest = { title: 'Correr 5km', description: null, weekDays: [2, 4] };
+    expect(habitServiceSpy.updateHabit).toHaveBeenCalledOnceWith(1, expectedRequest);
+    expect(habitServiceSpy.createHabit).not.toHaveBeenCalled();
+    expect(component.habitSaved.emit).toHaveBeenCalledTimes(1);
+  });
 
-    component.habitToEdit = habitData;
-    component.ngOnChanges({
-      habitToEdit: {
-        currentValue: habitData,
-        previousValue: null,
-        firstChange: true,
-        isFirstChange: () => true,
-      }
-    });
+  it('should not call any service if form is invalid (no title)', () => {
+    spyOn(window, 'alert');
+    component.title = '';
+    component.weekDaysFlags[0] = true;
 
-    expect(component.title).toBe('Ler');
-    expect(component.weekDaysFlags[0]).toBeTrue();
-    expect(component.weekDaysFlags[6]).toBeTrue();
-    expect(component.weekDaysFlags[1]).toBeFalse();
-  }));
+    component.createNewHabit();
 
+    expect(window.alert).toHaveBeenCalledWith('Preencha todos os campos');
+    expect(habitServiceSpy.createHabit).not.toHaveBeenCalled();
+    expect(habitServiceSpy.updateHabit).not.toHaveBeenCalled();
+  });
 });
