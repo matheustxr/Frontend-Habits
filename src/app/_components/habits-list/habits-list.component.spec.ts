@@ -74,17 +74,23 @@ describe('HabitsListComponent', () => {
     expect(component.completedChange.emit).toHaveBeenCalledOnceWith(1);
   });
 
-  it('should revert the toggle if the API call from HabitService fails', () => {
-    const initialHabits: HabitDayResponse[] = [ { id: 2, title: 'Hábito 2', completed: false, categoryId: 1, categoryName: 'Cat1' } ];
+  it('should revert the toggle and emit the original count on API error', () => {
+    const initialHabits: HabitDayResponse[] = [
+      { id: 1, title: 'Hábito 1', completed: true, categoryId: 1, categoryName: 'Cat1' },
+      { id: 2, title: 'Hábito 2', completed: false, categoryId: 1, categoryName: 'Cat1' }
+    ];
     component.habits = initialHabits;
+    const initialCompletedCount = 1;
+
     spyOn(component.completedChange, 'emit');
     habitServiceSpy.toggleHabitCompletion.and.returnValue(throwError(() => new Error('API Error')));
 
-    const habitToToggle = component.habits[0];
+    const habitToToggle = component.habits[1];
     component.toggleHabit(habitToToggle.id);
 
-    expect(component.habits[0].completed).toBeFalse();
-    expect(component.completedChange.emit).toHaveBeenCalledTimes(2);
+    expect(component.habits[1].completed).toBeFalse();
+
+    expect(component.completedChange.emit).toHaveBeenCalledOnceWith(initialCompletedCount);
   });
 
   it('should call getHabitById and emit the result on onEdit', () => {
