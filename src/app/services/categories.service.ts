@@ -23,12 +23,12 @@ export class CategoriesService {
   }
 
   createCategory(data: CategoryRequest): Observable<Category> {
-    const requestBody = { category: data.name, hexColor: data.hexColor };
+    const requestBody = { category: data.category, hexColor: data.hexColor };
     return this.http.post<Category>(this.apiUrl, requestBody);
   }
 
   updateCategory(id: number, data: CategoryRequest): Observable<void> {
-    const requestBody = { category: data.name, hexColor: data.hexColor };
+    const requestBody = { category: data.category, hexColor: data.hexColor };
     return this.http.put<void>(`${this.apiUrl}/${id}`, requestBody);
   }
 

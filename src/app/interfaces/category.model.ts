@@ -1,6 +1,6 @@
 export interface Category {
   id: number;
-  name: string;
+  category: string;
   hexColor: string;
 }
 
@@ -10,6 +10,6 @@ export interface CategoriesResponse {
 }
 
 export interface CategoryRequest {
-  name: string;
+  category: string;
   hexColor: string;
 }
