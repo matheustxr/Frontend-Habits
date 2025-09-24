@@ -30,7 +30,7 @@
   [modal]="true"
   [header]="itemToEdit ? 'Editar ' + title.slice(0, -1) : 'Criar ' + title.slice(0, -1)"
   [style]="{ width: '50vw' }"
-  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [breakpoints]="{ '1500px': '40vw', '1199px': '75vw', '575px': '90vw' }" [style]="{ width: 'auto' }"
 >
   @if (type === 'habits') {
     <app-habit-form [habitToEdit]="itemToEdit" (habitSaved)="onItemSaved()" />
