@@ -56,9 +56,10 @@ export class ManagementPageComponent implements OnInit {
     }
 
     service$.subscribe(data => {
+      console.log(data);
       this.items = data.map(item => ({
         id: item.id!,
-        name: item.title || item.name
+        name: item.title || item.category
       }));
     });
   }

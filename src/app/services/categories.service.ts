@@ -14,11 +14,7 @@ export class CategoriesService {
 
   getAllCategories(): Observable<Category[]> {
     return this.http.get<CategoriesResponse>(this.apiUrl).pipe(
-      map(response => response.categories.map(cat => ({
-        id: cat.id,
-        name: cat.name,
-        hexColor: cat.hexColor
-      })))
+      map(response => response.categories || [])
     );
   }
 
