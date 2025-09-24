@@ -14,5 +14,6 @@ export interface HabitRequest {
   title: string;
   description: string | null;
   weekDays: number[];
+  isActive: boolean
   categoryId?: number;
 }

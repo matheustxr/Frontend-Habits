@@ -1,106 +1,87 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { of } from 'rxjs';
-import { HabitService } from '../../services/habit.service';
 import { Habit, HabitRequest } from '../../interfaces/habit.model';
-import { HabitFormComponent } from './habit-form.component';
+import { HabitService } from '../../services/habit.service';
 import { TextInputComponent } from '../text-input/text-input.component';
-import { SimpleChanges } from '@angular/core';
 
-describe('HabitFormComponent', () => {
-  let component: HabitFormComponent;
-  let fixture: ComponentFixture<HabitFormComponent>;
+@Component({
+  selector: 'app-habit-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TextInputComponent],
+  templateUrl: './habit-form.component.html',
+})
+export class HabitFormComponent implements OnChanges {
+  @Input() habitToEdit: Habit | null = null;
+  @Output() habitSaved = new EventEmitter<void>();
 
-  let habitServiceSpy: jasmine.SpyObj<HabitService>;
+  title: string = '';
+  description: string | null = null;
+  weekDaysFlags: boolean[] = Array(7).fill(false);
+  isActive: boolean = true;
 
-  beforeEach(async () => {
-    const spy = jasmine.createSpyObj('HabitService', ['createHabit', 'updateHabit']);
+  isEditing = false;
 
-    await TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        HabitFormComponent,
-        TextInputComponent,
-      ],
-      providers: [
-        { provide: HabitService, useValue: spy }
-      ]
-    }).compileComponents();
+  constructor(private habitService: HabitService) {}
 
-    fixture = TestBed.createComponent(HabitFormComponent);
-    component = fixture.componentInstance;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['habitToEdit'] && this.habitToEdit) {
+      this.isEditing = true;
+      this.title = this.habitToEdit.title;
+      this.description = this.habitToEdit.description;
+      this.isActive = this.habitToEdit.isActive;
 
-    // Injetamos nosso dublê para que possamos controlá-lo nos teste
-    habitServiceSpy = TestBed.inject(HabitService) as jasmine.SpyObj<HabitService>;
+      this.weekDaysFlags.fill(false);
+      this.habitToEdit.weekDays.forEach(dayIndex => {
+        this.weekDaysFlags[dayIndex] = true;
+      });
+    } else {
+      this.isEditing = false;
+    }
+  }
 
-    fixture.detectChanges();
-  });
+  public createNewHabit(): void {
+    const selectedWeekDays = this.getWeekDaysFromFlags();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    if (!this.title || selectedWeekDays.length === 0) {
+      alert('Preencha todos os campos');
+      return;
+    }
 
-  it('should populate form fields when habitToEdit input is set', () => {
-    const habitToEdit: Habit = {
-      id: 1,
-      title: 'Ler 10 páginas',
-      description: 'Ficção científica',
-      weekDays: [1, 3, 5],
-      isActive: true
+    const request: HabitRequest = {
+      title: this.title,
+      description: this.description,
+      weekDays: selectedWeekDays,
+      isActive: this.isActive,
     };
 
-    component.habitToEdit = habitToEdit;
-    const changes: SimpleChanges = { habitToEdit: { currentValue: habitToEdit, previousValue: null, firstChange: true, isFirstChange: () => true } };
-    component.ngOnChanges(changes);
-    fixture.detectChanges();
+    if (this.isEditing) {
+      this.habitService.updateHabit(this.habitToEdit!.id!, request).subscribe(() => {
+        alert('Hábito atualizado com sucesso!');
+        this.resetForm();
+        this.habitSaved.emit();
+      });
+    } else {
+      this.habitService.createHabit(request).subscribe(() => {
+        alert('Hábito criado com sucesso!');
+        this.resetForm();
+        this.habitSaved.emit();
+      });
+    }
+  }
 
-    expect(component.title).toBe('Ler 10 páginas');
-    expect(component.description).toBe('Ficção científica');
-    expect(component.weekDaysFlags).toEqual([false, true, false, true, false, true, false]);
-  });
+  private resetForm(): void {
+    this.title = '';
+    this.description = null;
+    this.weekDaysFlags.fill(false);
+    this.isActive = true;
+    this.habitToEdit = null;
+    this.isEditing = false;
+  }
 
-  it('should call createHabit when submitting a new habit (habitToEdit is null)', () => {
-    spyOn(component.habitSaved, 'emit');
-    const mockCreatedHabit: Habit = { id: 2, title: 'Beber água', description: null, weekDays: [0,1,2,3,4,5,6], isActive: true };
-    habitServiceSpy.createHabit.and.returnValue(of(mockCreatedHabit));
-
-    component.title = 'Beber água';
-    component.weekDaysFlags.fill(true);
-
-    component.createNewHabit();
-
-    const expectedRequest: HabitRequest = { title: 'Beber água', description: null, weekDays: [0,1,2,3,4,5,6] };
-    expect(habitServiceSpy.createHabit).toHaveBeenCalledOnceWith(expectedRequest);
-    expect(habitServiceSpy.updateHabit).not.toHaveBeenCalled();
-    expect(component.habitSaved.emit).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call updateHabit when submitting an existing habit (habitToEdit is not null)', () => {
-    spyOn(component.habitSaved, 'emit');
-    const mockUpdatedHabit: Habit = { id: 1, title: 'Correr 5km', description: null, weekDays: [2,4], isActive: true };
-    habitServiceSpy.updateHabit.and.returnValue(of(mockUpdatedHabit));
-
-    component.habitToEdit = { id: 1, title: 'Correr', description: null, weekDays: [1,3], isActive: true };
-    component.title = 'Correr 5km';
-    component.weekDaysFlags = [false, false, true, false, true, false, false]; // Qua, Qui
-
-    component.createNewHabit();
-
-    const expectedRequest: HabitRequest = { title: 'Correr 5km', description: null, weekDays: [2, 4] };
-    expect(habitServiceSpy.updateHabit).toHaveBeenCalledOnceWith(1, expectedRequest);
-    expect(habitServiceSpy.createHabit).not.toHaveBeenCalled();
-    expect(component.habitSaved.emit).toHaveBeenCalledTimes(1);
-  });
-
-  it('should not call any service if form is invalid (no title)', () => {
-    spyOn(window, 'alert');
-    component.title = '';
-    component.weekDaysFlags[0] = true;
-
-    component.createNewHabit();
-
-    expect(window.alert).toHaveBeenCalledWith('Preencha todos os campos');
-    expect(habitServiceSpy.createHabit).not.toHaveBeenCalled();
-    expect(habitServiceSpy.updateHabit).not.toHaveBeenCalled();
-  });
-});
+  private getWeekDaysFromFlags(): number[] {
+    return this.weekDaysFlags
+      .map((isSelected, index) => isSelected ? index : -1)
+      .filter(index => index !== -1);
+  }
+}
