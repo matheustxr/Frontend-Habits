@@ -11,6 +11,7 @@ import { Category } from '../../interfaces/category.model';
 import { ManagedItemComponent } from '../../_components/managed-item/managed-item.component';
 import { Habit } from '../../interfaces/habit.model';
 import { HabitService } from '../../services/habit.service';
+import { SidebarComponent } from '../../_components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-management-page',
@@ -18,7 +19,8 @@ import { HabitService } from '../../services/habit.service';
     CommonModule,
     DialogModule,
     ManagedItemComponent,
-    HabitFormComponent
+    HabitFormComponent,
+    SidebarComponent
   ],
   templateUrl: './management-page.component.html',
 })
