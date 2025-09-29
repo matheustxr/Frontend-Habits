@@ -1,64 +1,70 @@
-<div class="w-full min-h-screen p-5 md:pt-10 bg-black">
-  <app-header />
+<div>
+  <app-sidebar></app-sidebar>
 
-  <div class="w-full max-w-5xl mx-auto flex flex-col items-center justify-center">
-    <div class="mt-14 flex justify-between items-center mb-6">
-      <div class="flex gap-4">
-        <select
-          class="w-full p-2 rounded-md bg-zinc-800 text-white"
-          [(ngModel)]="currentMonth"
-          (ngModelChange)="onMonthChange($event)"
-        >
-          @for (month of months; track $index; let i = $index) {
-            <option [value]="i">{{ month }}</option>
-          }
-        </select>
+  <main class="ml-64">
+    <div class="w-full min-h-screen p-5 md:pt-10 bg-black">
+      <app-header />
 
-        <select
-          class="p-2 rounded-md bg-zinc-800 text-white"
-          [(ngModel)]="currentYear"
-          (ngModelChange)="onYearChange($event)"
-        >
-          @for (year of years; track $index) {
-            <option [value]="year">{{ year }}</option>
-          }
-        </select>
-      </div>
-    </div>
+      <div class="w-full max-w-5xl mx-auto flex flex-col items-center justify-center">
+        <div class="mt-14 flex justify-between items-center mb-6">
+          <div class="flex gap-4">
+            <select
+              class="w-full p-2 rounded-md bg-zinc-800 text-white"
+              [(ngModel)]="currentMonth"
+              (ngModelChange)="onMonthChange($event)"
+            >
+              @for (month of months; track $index; let i = $index) {
+                <option [value]="i">{{ month }}</option>
+              }
+            </select>
 
-    <div class="max-w-[700px] mx-auto">
-      <div class="grid grid-cols-7 gap-3 mb-3">
-        @for (weekDay of weekDays; track $index) {
-          <div
-            class="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
-          >
-            {{ weekDay }}
+            <select
+              class="p-2 rounded-md bg-zinc-800 text-white"
+              [(ngModel)]="currentYear"
+              (ngModelChange)="onYearChange($event)"
+            >
+              @for (year of years; track $index) {
+                <option [value]="year">{{ year }}</option>
+              }
+            </select>
           </div>
-        }
-      </div>
+        </div>
 
-      <div class="grid grid-cols-7 gap-3">
-        @for (_ of leadingEmptyDays; track $index) {
-          <div class="w-10 h-10"></div>
-        }
+        <div class="max-w-[700px] mx-auto">
+          <div class="grid grid-cols-7 gap-3 mb-3">
+            @for (weekDay of weekDays; track $index) {
+              <div
+                class="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
+              >
+                {{ weekDay }}
+              </div>
+            }
+          </div>
 
-        @for (date of dates; track $index) {
-          <app-habit-day
-            [date]="date"
-            [amount]="getDayData(date)?.amount ?? 0"
-            [defaultCompleted]="getDayData(date)?.completed ?? 0"
-            (editHabit)="onEditHabit($event)"
-          />
-        }
+          <div class="grid grid-cols-7 gap-3">
+            @for (_ of leadingEmptyDays; track $index) {
+              <div class="w-10 h-10"></div>
+            }
+
+            @for (date of dates; track $index) {
+              <app-habit-day
+                [date]="date"
+                [amount]="getDayData(date)?.amount ?? 0"
+                [defaultCompleted]="getDayData(date)?.completed ?? 0"
+                (editHabit)="onEditHabit($event)"
+              />
+            }
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<p-dialog
-  [(visible)]="displayModal"
-  [modal]="true"
-  header="Editar hábito {{ habitToEdit?.title }}"
->
-  <app-habit-form [habitToEdit]="habitToEdit" (habitSaved)="onHabitSaved()"></app-habit-form>
-</p-dialog>
+    <p-dialog
+      [(visible)]="displayModal"
+      [modal]="true"
+      header="Editar hábito {{ habitToEdit?.title }}"
+    >
+      <app-habit-form [habitToEdit]="habitToEdit" (habitSaved)="onHabitSaved()"></app-habit-form>
+    </p-dialog>
+  </main>
+</div>

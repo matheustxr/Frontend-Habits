@@ -8,10 +8,19 @@ import { HeaderComponent } from "../../_components/header/header.component";
 import dayjs from 'dayjs';
 import { Dialog } from "primeng/dialog";
 import { HabitFormComponent } from "../../_components/habit-form/habit-form.component";
+import { SidebarComponent } from '../../_components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, HabitDayComponent, HeaderComponent, Dialog, HabitFormComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HabitDayComponent,
+    HeaderComponent,
+    Dialog,
+    HabitFormComponent,
+    SidebarComponent 
+  ],
   templateUrl: './dashboard.component.html',
 })
 
