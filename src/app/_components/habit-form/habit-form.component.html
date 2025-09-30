@@ -8,6 +8,14 @@
     required
   ></app-text-input>
 
+  <app-text-input
+    label="Descrição (Opcional)"
+    placeholder="Algum detalhe extra sobre o hábito..."
+    name="description"
+    type="text"
+    [(ngModel)]="description"
+  ></app-text-input>
+
   <label class="font-semibold leading-tight">
     Qual a recorrência?
   </label>
@@ -19,11 +27,10 @@
           type="checkbox"
           [id]="'day' + $index"
           [checked]="weekDaysFlags[$index]"
-          (change)="toggleDay($index, $event)"
+          (change)="toggleDay($index)"
           [name]="'day' + $index"
           class="custom-checkbox"
         >
-
         <label
           [for]="'day' + $index"
           class="text-white leading-tight cursor-pointer"

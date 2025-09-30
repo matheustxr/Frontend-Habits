@@ -28,12 +28,12 @@ describe('SidebarComponent', () => {
   it('should render the correct number of navigation links', () => {
     const linkElements = fixture.debugElement.queryAll(By.css('nav a'));
 
-    expect(linkElements.length).toBe(component.navLinks.length);
+    expect(linkElements.length).toBe(component.mainNavLinks.length);
   });
 
   it('should display the correct label for each link', () => {
     const linkElements = fixture.debugElement.queryAll(By.css('nav a'));
-    const expectedLabels = component.navLinks.map(link => link.label);
+    const expectedLabels = component.mainNavLinks.map(link => link.label);
 
     linkElements.forEach((linkElement, index) => {
       const span = linkElement.query(By.css('span'));
@@ -43,7 +43,7 @@ describe('SidebarComponent', () => {
 
   it('should have the correct icon class for each link', () => {
     const linkElements = fixture.debugElement.queryAll(By.css('nav a'));
-    const expectedIconClasses = component.navLinks.map(link => link.icon);
+    const expectedIconClasses = component.mainNavLinks.map(link => link.icon);
 
     linkElements.forEach((linkElement, index) => {
       const icon = linkElement.query(By.css('i'));
@@ -53,7 +53,7 @@ describe('SidebarComponent', () => {
 
   it('should have the correct href attribute for each link', () => {
     const linkElements = fixture.debugElement.queryAll(By.css('nav a'));
-    const expectedRouterLinks = component.navLinks.map(link => link.routerLink);
+    const expectedRouterLinks = component.mainNavLinks.map(link => link.routerLink);
 
     linkElements.forEach((linkDe, index) => {
       const href = linkDe.nativeElement.getAttribute('href');

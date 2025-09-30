@@ -1,5 +1,5 @@
 <header>
-  <div class="w-full max-w-5xl mx-auto flex items-center justify-between">
+  <div class="w-full max-w-5xl mx-auto flex items-center justify-between h-24">
     <img src="/logo.svg" alt="Habits" />
 
     <ng-container *ngIf="!authService.isLoggedIn()">
@@ -8,24 +8,18 @@
         class="flex gap-2 items-center text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 hover:border-violet-300 transition-colors"
       >
         <i class="pi pi-user text-violet-500"></i>
-        Entrar
+        <span>Entrar</span>
       </button>
     </ng-container>
 
     <ng-container *ngIf="authService.isLoggedIn()">
-      <div class="flex items-center gap-4">
-        <button
-          (click)="menu.toggle($event)"
-          class="flex items-center gap-3 text-white p-3 border border-violet-500 rounded-lg hover:bg-zinc-800 transition-colors"
-          aria-label="Menu do usuário"
-        >
-          <i class="pi pi-user text-xl"></i>
-          <span class="font-semibold">{{ userName }}</span>
-          <i class="pi pi-chevron-down text-sm"></i>
-        </button>
-
-        <p-menu #menu [model]="userMenuItems" [popup]="true"></p-menu>
-      </div>
+      <button
+        (click)="showNewHabitModal()"
+        class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors"
+      >
+        <i class="pi pi-plus text-violet-500"></i>
+        <span>Novo Hábito</span>
+      </button>
     </ng-container>
   </div>
 
@@ -50,13 +44,8 @@
           />
         </ng-container>
       }
-
-      @case ('profile') {
-        <app-profile-form />
-      }
-
-      @case ('change-password') {
-        <app-change-password-form />
+      @case ('habit') {
+        <app-habit-form (habitSaved)="onItemSaved()" />
       }
     }
   </p-dialog>
