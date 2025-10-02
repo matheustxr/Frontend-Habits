@@ -1,42 +1,100 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { CreateAccountFormComponent } from '../create-account-form/create-account-form.component';
 import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
-import { AppEventsService } from '../../services/app-events.service';
+import { Subscription, filter } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
+import { AppEventsService, ModalType } from '../../services/app-events.service';
 import { HabitFormComponent } from '../habit-form/habit-form.component';
+// import { CategoryFormComponent } from '../category-form/category-form.component';
+import { ProfileFormComponent } from '../profile-form/profile-form.component';
+import { ChangePasswordFormComponent } from '../change-password-form/change-password-form.component';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [
     CommonModule, DialogModule, ButtonModule,
-    LoginFormComponent, CreateAccountFormComponent, HabitFormComponent
+    LoginFormComponent, CreateAccountFormComponent, HabitFormComponent,
+    ProfileFormComponent, ChangePasswordFormComponent
   ],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() pageTitle: string = 'Dashboard';
+
+  // Propriedades para o botão de ação dinâmico
+  actionButtonText: string = 'Novo Hábito';
+  actionButtonIcon: string = 'pi pi-plus';
+
   displayModal = false;
   modalHeader = '';
   showCreateAccountForm = false;
-  modalContent: 'auth' | 'habit' | null = null;
+  modalContent: ModalType | 'category' | null = null;
   private eventsSubscription!: Subscription;
 
   constructor(
     public authService: AuthService,
-    private appEventsService: AppEventsService
+    private appEventsService: AppEventsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.eventsSubscription = this.appEventsService.formSuccess$.subscribe(() => {
+    const formSuccessSub = this.appEventsService.formSuccess$.subscribe(() => {
       this.displayModal = false;
     });
+
+    const routerSub = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateButtonState(this.router.url);
+    });
+
+    // Inscrição para abrir modais solicitados por outros componentes (como a Sidebar)
+    const modalRequestSub = this.appEventsService.modalRequest$.subscribe((modalType: ModalType) => {
+      switch (modalType) {
+        case 'auth': this.showAuthModal(); break;
+        case 'profile': this.showProfileModal(); break;
+        case 'change-password': this.showChangePasswordModal(); break;
+        case 'habit': this.showNewHabitModal(); break;
+      }
+    });
+
+    this.eventsSubscription = new Subscription();
+    this.eventsSubscription.add(formSuccessSub);
+    this.eventsSubscription.add(routerSub);
+    this.eventsSubscription.add(modalRequestSub);
+
+    // Garante que o estado do botão esteja correto no carregamento inicial
+    this.updateButtonState(this.router.url);
   }
 
   ngOnDestroy(): void {
-    this.eventsSubscription.unsubscribe();
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
+  }
+
+  private updateButtonState(url: string): void {
+    if (url.includes('/manage/categories')) {
+      this.actionButtonText = 'Nova Categoria';
+      this.actionButtonIcon = 'pi pi-tag';
+    } else {
+      this.actionButtonText = 'Novo Hábito';
+      this.actionButtonIcon = 'pi pi-plus';
+    }
+  }
+
+  onMainActionClick(): void {
+    if (this.router.url.includes('/manage/categories')) {
+      this.showNewCategoryModal();
+    } else {
+      this.showNewHabitModal();
+    }
   }
 
   showAuthModal(): void {
@@ -49,6 +107,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showNewHabitModal(): void {
     this.modalContent = 'habit';
     this.modalHeader = 'Criar Hábito';
+    this.displayModal = true;
+  }
+
+  showNewCategoryModal(): void {
+    this.modalContent = 'category';
+    this.modalHeader = 'Criar Categoria';
+    this.displayModal = true;
+  }
+
+  showProfileModal(): void {
+    this.modalContent = 'profile';
+    this.modalHeader = 'Meu Perfil';
+    this.displayModal = true;
+  }
+
+  showChangePasswordModal(): void {
+    this.modalContent = 'change-password';
+    this.modalHeader = 'Alterar Senha';
     this.displayModal = true;
   }
 

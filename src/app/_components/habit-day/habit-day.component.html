@@ -1,12 +1,12 @@
 <div class="relative inline-block w-full" #triggerWrapper>
   <div (click)="toggle()" class="w-fit">
     <p-button
-      class="w-12 h-12 rounded-full relative border-none bg-transparent"
+      class="w-10 md:w-12 h-10 md:h-12 rounded-full relative border-none bg-transparent"
       [style.border]="'none'"
       [style.backgroundColor]="'transparent'"
     >
       <div
-        class="w-12 h-12 p-0.5 flex justify-center items-center rounded-full"
+        class="w-10 md:w-12 h-10 md:h-12 p-0.5 flex justify-center items-center rounded-full"
         [ngStyle]="{
           backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
           transition: 'background-image 0.5s ease'

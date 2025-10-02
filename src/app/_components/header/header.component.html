@@ -1,26 +1,26 @@
 <header>
   <div class="w-full max-w-5xl mx-auto flex items-center justify-between h-24">
-    <img src="/logo.svg" alt="Habits" />
+    <h1 class="text-3xl font-bold text-white">{{ pageTitle }}</h1>
 
-    <ng-container *ngIf="!authService.isLoggedIn()">
+    @if(!authService.isLoggedIn()){
       <button
         (click)="showAuthModal()"
-        class="flex gap-2 items-center text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 hover:border-violet-300 transition-colors"
+        class="px-6 py-3 flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-800 transition-colors rounded-lg cursor-pointer"
       >
-        <i class="pi pi-user text-violet-500"></i>
+        <i class="pi pi-user"></i>
         <span>Entrar</span>
       </button>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="authService.isLoggedIn()">
+    @if(authService.isLoggedIn()){
       <button
-        (click)="showNewHabitModal()"
-        class="text-white border border-violet-500 font-semibold rounded-lg px-6 py-4 flex items-center gap-3 hover:border-violet-300 transition-colors"
+        (click)="onMainActionClick()"
+        class="px-6 py-3 flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-800 transition-colors rounded-lg cursor-pointer"
       >
-        <i class="pi pi-plus text-violet-500"></i>
-        <span>Novo Hábito</span>
+        <i [class]="actionButtonIcon" class="text-white"></i>
+        <span>{{ actionButtonText }}</span>
       </button>
-    </ng-container>
+    }
   </div>
 
   <p-dialog
@@ -46,6 +46,17 @@
       }
       @case ('habit') {
         <app-habit-form (habitSaved)="onItemSaved()" />
+      }
+      @case ('category') {
+        <p>
+          teste categoria
+        </p>
+      }
+      @case ('profile') {
+        <app-profile-form />
+      }
+      @case ('change-password') {
+        <app-change-password-form />
       }
     }
   </p-dialog>

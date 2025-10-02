@@ -1,9 +1,12 @@
-<div class="bg-black">
+<div class="bg-black flex flex-col md:flex-row">
   <app-sidebar></app-sidebar>
-  <div class="w-full max-w-5xl mx-auto min-h-screen p-5 md:pt-10 text-white">
+
+  <div class="w-full max-w-5xl mx-auto min-h-screen p-5 pt-20 md:pt-10 md:mt-0 text-white">
     <header class="flex items-center justify-between pb-4 border-b border-zinc-800">
       <h1 class="text-3xl font-bold">{{ title }}</h1>
-      <button (click)="handleAddItem()" class="flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-500 transition-colors px-4 py-2 rounded-lg">
+      <button (click)="handleAddItem()"
+        class="px-6 py-3 flex items-center gap-2 font-semibold bg-violet-600 hover:bg-violet-800 transition-colors rounded-lg cursor-pointer"
+      >
         <i class="pi pi-plus"></i>
         <span>Adicionar Novo</span>
       </button>

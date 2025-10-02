@@ -44,7 +44,7 @@ describe('ManagementPageComponent', () => {
 
   it('should create', () => {
     habitsServiceSpy.getAllHabits.and.returnValue(of([]));
-    fixture.detectChanges(); // ngOnInit é chamado aqui
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
