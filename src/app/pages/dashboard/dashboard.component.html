@@ -31,7 +31,7 @@
         </div>
 
         <div class="max-w-[700px] mx-auto">
-          <div class="grid grid-cols-7 gap-3 mb-3">
+          <div class="grid grid-cols-7 gap-1 md:gap-3 mb-3">
             @for (weekDay of weekDays; track $index) {
               <div
                 class="text-zinc-400 text-xl h-10 w-10 font-bold flex items-center justify-center"
@@ -41,18 +41,20 @@
             }
           </div>
 
-          <div class="grid grid-cols-7 gap-3">
+          <div class="w-full max-sm:max-w-[340px] grid grid-cols-7 gap-1 md:gap-3">
             @for (_ of leadingEmptyDays; track $index) {
               <div class="w-10 h-10"></div>
             }
 
             @for (date of dates; track $index) {
-              <app-habit-day
-                [date]="date"
-                [amount]="getDayData(date)?.amount ?? 0"
-                [defaultCompleted]="getDayData(date)?.completed ?? 0"
-                (editHabit)="onEditHabit($event)"
-              />
+              <div class="relative">
+                <app-habit-day
+                  [date]="date"
+                  [amount]="getDayData(date)?.amount ?? 0"
+                  [defaultCompleted]="getDayData(date)?.completed ?? 0"
+                  (editHabit)="onEditHabit($event)"
+                />
+              </div>
             }
           </div>
         </div>

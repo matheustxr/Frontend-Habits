@@ -1,51 +1,38 @@
-<div class="relative inline-block w-full" #triggerWrapper>
-  <div (click)="toggle()" class="w-fit">
-    <p-button
-      class="w-10 md:w-12 h-10 md:h-12 rounded-full relative border-none bg-transparent"
-      [style.border]="'none'"
-      [style.backgroundColor]="'transparent'"
-    >
-      <div
-        class="w-10 md:w-12 h-10 md:h-12 p-0.5 flex justify-center items-center rounded-full"
-        [ngStyle]="{
-          backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, transparent ' + completedPercentage + '%)',
-          transition: 'background-image 0.5s ease'
-        }"
-      >
-        <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center z-10">
-          <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
-        </div>
-      </div>
-    </p-button>
-  </div>
+<div class="relative w-full flex justify-center" #triggerWrapper>
 
-  <div
-    *ngIf="isPopoverOpen"
-    class="absolute z-50 w-80 rounded-xl bg-zinc-900 p-6 shadow-lg"
-    [ngClass]="{
-      'top-full mt-3': !renderAbove,
-      'bottom-full mb-3': renderAbove
-    }"
+  <button
+    type="button"
+    (click)="toggle()"
+    class="w-10 md:w-12 h-10 md:h-12 rounded-full p-0.5 flex justify-center items-center cursor-pointer transition-all duration-300 ease-in-out"
     [ngStyle]="{
-      left: '50%',
-      transform: renderAbove ? 'translateX(-50%)' : 'translateX(-7%)'
+      backgroundImage: 'conic-gradient(#7c3aed ' + completedPercentage + '%, #18181b ' + completedPercentage + '%)'
     }"
+  >
+    <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center">
+      <span class="text-sm text-white font-bold">{{ date | date: 'd' }}</span>
+    </div>
+  </button>
+
+</div>
+
+@if(isPopoverOpen){
+  <div
     #popoverContent
+    [ngStyle]="popoverStyle"
+    class="fixed z-50 w-72 md:w-80 max-w-[calc(100vw-16px)] rounded-xl bg-zinc-900 p-6 shadow-lg"
   >
     <div
       class="absolute w-3 h-3 rotate-45 bg-zinc-900"
-      [ngClass]="{
-        'top-[-6px] left-1/2 -translate-x-1/2': !renderAbove,
-        'bottom-[-6px] left-1/2 -translate-x-1/2': renderAbove
-      }"
+      [style.left]="'var(--arrow-left-position)'"
+      [style.transform]="'translateX(-50%)'"
+      [class.top-[-2px]]="!renderAbove"
+      [class.bottom-[-2px]]="renderAbove"
     ></div>
 
     <div class="flex flex-col">
-      <span class="font-semibold text-white capitalize">{{ dayOfWeek }}</span>
+      <span class="font-semibold text-zinc-400 capitalize">{{ dayOfWeek }}</span>
       <span class="mt-1 font-extrabold leading-tight text-3xl text-white">{{ dayAndMonth }}</span>
-
       <app-progress-bar [progress]="completedPercentage"></app-progress-bar>
-
       <app-habits-list
         [date]="date"
         (completedChange)="handleCompletedChanged($event)"
@@ -53,4 +40,4 @@
       ></app-habits-list>
     </div>
   </div>
-</div>
+}
