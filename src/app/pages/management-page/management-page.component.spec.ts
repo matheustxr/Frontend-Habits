@@ -7,6 +7,7 @@ import { Habit } from '../../interfaces/habit.model';
 import { Category } from '../../interfaces/category.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HabitService } from '../../services/habit.service';
+import { AuthService } from '../../services/auth.service';
 
 describe('ManagementPageComponent', () => {
   let component: ManagementPageComponent;
@@ -14,12 +15,15 @@ describe('ManagementPageComponent', () => {
 
   let habitsServiceSpy: jasmine.SpyObj<HabitService>;
   let categoriesServiceSpy: jasmine.SpyObj<CategoriesService>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>; 
 
   let activatedRouteMock: any;
 
   beforeEach(async () => {
     const habitsSpy = jasmine.createSpyObj('HabitsService', ['getAllHabits', 'getHabitById', 'deleteHabit']);
     const categoriesSpy = jasmine.createSpyObj('CategoriesService', ['getAllCategories', 'getCategoryById', 'deleteCategory']);
+    // 2. CRIE O "DUBLÊ" para o AuthService
+    const authSpy = jasmine.createSpyObj('AuthService', ['isLoggedIn']);
 
     activatedRouteMock = {
       paramMap: of(convertToParamMap({ type: 'habits' }))
@@ -30,7 +34,9 @@ describe('ManagementPageComponent', () => {
       providers: [
         { provide: HabitService, useValue: habitsSpy },
         { provide: CategoriesService, useValue: categoriesSpy },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        // 3. FORNEÇA o dublê do AuthService. Isso resolve o erro.
+        { provide: AuthService, useValue: authSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -40,10 +46,12 @@ describe('ManagementPageComponent', () => {
 
     habitsServiceSpy = TestBed.inject(HabitService) as jasmine.SpyObj<HabitService>;
     categoriesServiceSpy = TestBed.inject(CategoriesService) as jasmine.SpyObj<CategoriesService>;
+    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
   it('should create', () => {
     habitsServiceSpy.getAllHabits.and.returnValue(of([]));
+    authServiceSpy.isLoggedIn.and.returnValue(false);
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
