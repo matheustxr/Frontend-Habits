@@ -34,7 +34,6 @@ describe('ManagementPageComponent', () => {
         { provide: HabitService, useValue: habitsSpy },
         { provide: CategoriesService, useValue: categoriesSpy },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-        // 3. FORNEÇA o dublê do AuthService. Isso resolve o erro.
         { provide: AuthService, useValue: authSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
