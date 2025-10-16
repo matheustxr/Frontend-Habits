@@ -15,14 +15,13 @@ describe('ManagementPageComponent', () => {
 
   let habitsServiceSpy: jasmine.SpyObj<HabitService>;
   let categoriesServiceSpy: jasmine.SpyObj<CategoriesService>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>; 
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
 
   let activatedRouteMock: any;
 
   beforeEach(async () => {
     const habitsSpy = jasmine.createSpyObj('HabitsService', ['getAllHabits', 'getHabitById', 'deleteHabit']);
     const categoriesSpy = jasmine.createSpyObj('CategoriesService', ['getAllCategories', 'getCategoryById', 'deleteCategory']);
-    // 2. CRIE O "DUBLÊ" para o AuthService
     const authSpy = jasmine.createSpyObj('AuthService', ['isLoggedIn']);
 
     activatedRouteMock = {
