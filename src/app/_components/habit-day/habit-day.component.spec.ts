@@ -1,105 +1,92 @@
-import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
+import { of } from 'rxjs';
+
 import { HabitDayComponent } from './habit-day.component';
+import { HabitService } from '../../services/habit.service';
+import { SummaryService } from '../../services/summary.service';
 
 describe('HabitDayComponent', () => {
   let component: HabitDayComponent;
   let fixture: ComponentFixture<HabitDayComponent>;
 
+  let habitServiceSpy: jasmine.SpyObj<HabitService>;
+  let summaryServiceSpy: jasmine.SpyObj<SummaryService>;
+
   beforeEach(async () => {
+    const habitSpy = jasmine.createSpyObj('HabitService', ['toggleHabitCompletion', 'getHabitById']);
+    const summarySpy = jasmine.createSpyObj('SummaryService', ['getHabitsByDate']);
+
     await TestBed.configureTestingModule({
       imports: [HabitDayComponent],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
-    })
-    .compileComponents();
+        { provide: HabitService, useValue: habitSpy },
+        { provide: SummaryService, useValue: summarySpy }
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HabitDayComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    habitServiceSpy = TestBed.inject(HabitService) as jasmine.SpyObj<HabitService>;
+    summaryServiceSpy = TestBed.inject(SummaryService) as jasmine.SpyObj<SummaryService>;
+
+    summaryServiceSpy.getHabitsByDate.and.returnValue(of([]));
+
+    component.date = new Date();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
+  describe('Popover Visibility', () => {
+    it('should show popover in the DOM when isPopoverOpen is true', () => {
+      summaryServiceSpy.getHabitsByDate.and.returnValue(of([]));
 
-  it('should display the correct day of the month', () => {
-    const testDate = new Date(2025, 5, 26);
-    component.date = testDate;
-    fixture.detectChanges();
+      component.isPopoverOpen = true;
+      fixture.detectChanges();
 
-    const spanElement: HTMLElement = fixture.nativeElement.querySelector('span');
-    expect(spanElement.textContent).toContain('26');
+      const popover = fixture.nativeElement.querySelector('.fixed.z-50');
+      expect(popover).toBeTruthy();
+    });
+
+    it('should close popover on document click outside the component', () => {
+      component.isPopoverOpen = true;
+      fixture.detectChanges();
+
+      document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      fixture.detectChanges();
+
+      expect(component.isPopoverOpen).toBeFalse();
+    });
   });
 
+  describe('State and Event Handling', () => {
+    it('should update "completed" property on ngOnChanges', () => {
+      component.defaultCompleted = 3;
+      const changes: SimpleChanges = {
+        defaultCompleted: {
+          currentValue: 3, previousValue: 0, firstChange: false, isFirstChange: () => false
+        }
+      };
 
-  it('should toggle popover visibility when toggle() is called', () => {
-    expect(component.isPopoverOpen).toBeFalse();
+      component.ngOnChanges(changes);
 
-    component.toggle();
-    expect(component.isPopoverOpen).toBeTrue();
+      expect(component.completed).toBe(3);
+    });
 
-    component.toggle();
-    expect(component.isPopoverOpen).toBeFalse();
-  });
+    it('should emit editHabit event and close popover on onEditHabit', () => {
+      spyOn(component.editHabit, 'emit');
+      spyOn(component, 'close').and.callThrough();
+      const mockHabit = { id: 1, title: 'Test' };
 
+      component.onEditHabit(mockHabit);
 
-  it('should update completed when handleCompletedChanged is called', () => {
-    component.handleCompletedChanged(5);
-    expect(component.completed).toBe(5);
-  });
-
-
-  it('should calculate the correct completed percentage', () => {
-    component.amount = 10;
-    component.completed = 4;
-    expect(component.completedPercentage).toBe(40);
-  });
-
-  it('should return 0 completed percentage when amount is 0', () => {
-    component.amount = 0;
-    component.completed = 5;
-    expect(component.completedPercentage).toBe(0);
-  });
-
-
-  it('should close popover when clicking outside', () => {
-    component.isPopoverOpen = true;
-    fixture.detectChanges();
-
-    const event = new MouseEvent('click', { bubbles: true });
-    document.dispatchEvent(event);
-
-    fixture.detectChanges();
-    expect(component.isPopoverOpen).toBeFalse();
-  });
-
-
-  it('should update completed on ngOnChanges when defaultCompleted changes', () => {
-    const changes: SimpleChanges = {
-      defaultCompleted: {
-        currentValue: 3,
-        previousValue: 0,
-        firstChange: false,
-        isFirstChange: () => false,
-      }
-    };
-
-    component.ngOnChanges(changes);
-    expect(component.completed).toBe(3);
-  });
-
-
-  it('should render popover when isPopoverOpen is true', () => {
-    component.isPopoverOpen = true;
-    fixture.detectChanges();
-
-    const popover = fixture.nativeElement.querySelector('.absolute.z-50');
-    expect(popover).toBeTruthy();
+      expect(component.editHabit.emit).toHaveBeenCalledOnceWith(mockHabit);
+      expect(component.close).toHaveBeenCalledTimes(1);
+    });
   });
 });

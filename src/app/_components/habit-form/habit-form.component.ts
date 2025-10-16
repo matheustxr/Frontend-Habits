@@ -7,7 +7,6 @@ import { TextInputComponent } from '../text-input/text-input.component';
 
 @Component({
   selector: 'app-habit-form',
-  standalone: true,
   imports: [CommonModule, FormsModule, TextInputComponent],
   templateUrl: './habit-form.component.html',
 })

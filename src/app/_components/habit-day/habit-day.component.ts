@@ -37,7 +37,7 @@ export class HabitDayComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['defaultCompleted']) {
-      this.completed = this.defaultCompleted;
+      this.completed = changes['defaultCompleted'].currentValue;;
     }
   }
 

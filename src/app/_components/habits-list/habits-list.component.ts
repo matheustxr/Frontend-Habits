@@ -14,7 +14,6 @@ import { HabitService } from '../../services/habit.service';
 
 @Component({
   selector: 'app-habits-list',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './habits-list.component.html',
 })

@@ -19,7 +19,7 @@ import { SidebarComponent } from '../../_components/sidebar/sidebar.component';
     HeaderComponent,
     Dialog,
     HabitFormComponent,
-    SidebarComponent 
+    SidebarComponent
   ],
   templateUrl: './dashboard.component.html',
 })

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-text-input',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './text-input.component.html',
   providers: [
