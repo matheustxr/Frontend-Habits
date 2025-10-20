@@ -68,7 +68,11 @@
           <nav class="space-y-2">
             <p class="text-xs font-bold uppercase text-zinc-500 px-3 mb-2">Conta</p>
             @for (link of settingsActions; track link.label) {
-              <button (click)="link.action()" class="w-full flex items-center gap-3 p-3 rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors text-left cursor-pointer">
+              <button
+                (click)="link.action()"
+                [attr.data-testid]="link.label"
+                class="w-full flex items-center gap-3 p-3 rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors text-left cursor-pointer"
+              >
                 <i [class]="link.icon" class="text-2xl min-w-[2rem] text-center"></i>
                 <span class="font-semibold whitespace-nowrap">{{ link.label }}</span>
               </button>
